@@ -27,6 +27,13 @@ namespace FlightSimulator
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             Views.Windows.Settings settings = new Views.Windows.Settings();
+            int x = Properties.Settings.Default.FlightCommandPort;  //5100
+            int y = Properties.Settings.Default.FlightInfoPort;     //5200
+            string z = Properties.Settings.Default.FlightServerIP;  //127.0.0.1
+
+            MessageBox.Show(z);
+            MessageBox.Show(x.ToString());
+            MessageBox.Show(y.ToString());
             settings.ShowDialog();
         }
     }

@@ -12,7 +12,7 @@ namespace FlightSimulator.ViewModels.Windows
 {
     public class SettingsWindowViewModel : BaseNotify
     {
-        private ISettingsModel model;
+        private ISettingsModel model;   //How is it eligible to create an instance of an interface?
 
         public SettingsWindowViewModel(ISettingsModel model)
         {

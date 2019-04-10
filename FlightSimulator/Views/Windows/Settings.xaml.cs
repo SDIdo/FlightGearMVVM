@@ -21,8 +21,9 @@ namespace FlightSimulator.Views.Windows
     {
         public Settings()
         {
-            InitializeComponent();
+            InitializeComponent();      //They all need to be of the same Model.. somehow to insert it into settings
             this.DataContext = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());    //
+            //FlightCommandPort.Text;
             //FlightServerIP.Text = "127";
             //FlightInfoPort.Text = "225";
             //FlightCommandPort.Text = "777";
