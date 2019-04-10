@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\booki\Desktop\Ido\BIU\yearB\SemB\Advanced2\Targilim\SecondEx\FlightSimulator\FlightSimulator\obj\Debug\
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\
 FlightSimulator
 none
 false
 DEBUG;TRACE
-C:\Users\booki\Desktop\Ido\BIU\yearB\SemB\Advanced2\Targilim\SecondEx\FlightSimulator\FlightSimulator\App.xaml
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\App.xaml
 4776151721
 
-19-1614637339
-161996378593
+15-1496057324
+16-1804878616
 MainWindow.xaml;Views\FlightBoard.xaml;Views\Joystick.xaml;Views\Windows\Settings.xaml;
 
-True
+False
 

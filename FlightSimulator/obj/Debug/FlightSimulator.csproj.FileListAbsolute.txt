@@ -74,3 +74,27 @@ C:\Users\booki\Desktop\Ido\BIU\yearB\SemB\Advanced2\Targilim\SecondEx\FlightSimu
 C:\Users\booki\Desktop\Ido\BIU\yearB\SemB\Advanced2\Targilim\SecondEx\FlightSimulator\FlightSimulator\obj\Debug\FlightSimulator.csproj.GenerateResource.cache
 C:\Users\booki\Desktop\Ido\BIU\yearB\SemB\Advanced2\Targilim\SecondEx\FlightSimulator\FlightSimulator\obj\Debug\FlightSimulator.csproj.CoreCompileInputs.cache
 C:\Users\booki\Desktop\Ido\BIU\yearB\SemB\Advanced2\Targilim\SecondEx\FlightSimulator\FlightSimulator\obj\Debug\FlightSimulator.csproj.CopyComplete
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\bin\Debug\FlightSimulator.exe.config
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\bin\Debug\FlightSimulator.exe
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\bin\Debug\FlightSimulator.pdb
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\bin\Debug\DynamicDataDisplay.dll
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\bin\Debug\DynamicDataDisplay.xml
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.csprojAssemblyReference.cache
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\Views\Joystick.baml
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\MainWindow.g.cs
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\Views\FlightBoard.g.cs
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\Views\Joystick.g.cs
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\Views\Windows\Settings.g.cs
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\App.g.cs
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator_MarkupCompile.cache
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator_MarkupCompile.lref
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\MainWindow.baml
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\Views\FlightBoard.baml
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\Views\Windows\Settings.baml
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.g.resources
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.Properties.Resources.resources
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.csproj.GenerateResource.cache
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.csproj.CoreCompileInputs.cache
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.csproj.CopyComplete
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.exe
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.pdb
