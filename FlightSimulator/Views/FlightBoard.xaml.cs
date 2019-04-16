@@ -20,20 +20,28 @@ using Microsoft.Research.DynamicDataDisplay.DataSources;
 
 namespace FlightSimulator.Views
 {
+
     /// <summary>
     /// Interaction logic for MazeBoard.xaml
     /// </summary>
     public partial class FlightBoard : UserControl
     {
+
         ObservableDataSource<Point> planeLocations = null;
-        //ObservableDataSource<Point> planeLocations = new ObservableDataSource<Point>();
+
+        FlightBoardViewModel vm;
         public FlightBoard()
         {
             InitializeComponent();
+            //RoutedEventArgs e = new RoutedEventArgs();
+            //UserControl_Loaded(this, e);
 
-            RoutedEventArgs e = new RoutedEventArgs();
-            UserControl_Loaded(this, e);
-            Vm_PropertyChanged(this, new PropertyChangedEventArgs("Lon"));
+            vm = new FlightBoardViewModel(new FlightBoardModel(new MyTelnetClient()));
+
+
+            vm.PropertyChanged += Vm_PropertyChanged;      //register to an event
+            DataContext = vm;
+
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -45,19 +53,28 @@ namespace FlightSimulator.Views
             plotter.AddLineGraph(planeLocations, 2, "Route");
         }
 
-        private void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e) //WAS PRIVATE! CHANGE BACK WHEN THINGS SETTLE.
         {
-            if(e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon"))
-            {
-                for (int i = 100; i >= 0; --i)
+            
+            //if(e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon"))
+            //{
+                MessageBox.Show("Has entered VM_Property");
+                for (int i = 2; i >= 0; --i)
                 {
-                    Point p1 = new Point(i, i+1);            // Fill here!
+                    Point p1 = new Point(1, 1);            // Fill here!
+                    planeLocations.AppendAsync(Dispatcher, p1);
+                    p1 = new Point(1, -1);            // Fill here!
+                    planeLocations.AppendAsync(Dispatcher, p1);
+                    p1 = new Point(8, 2);            // Fill here!
                     planeLocations.AppendAsync(Dispatcher, p1);
                 }
+                //double lat = ((FlightBoardModel)sender).Lat;    //Should be taken from the view Model! Change when settle
+                //double lon = ((FlightBoardModel)sender).Lon;
+                //MessageBox.Show("Took Notice!: " + lon + ", " + lat);
+                //Point p1 = new Point(lat, lon);
+                //planeLocations.AppendAsync(Dispatcher, p1);
             }
         }
-
     }
-
-}
+//}
 

@@ -9,17 +9,12 @@ using System.Windows;
 
 namespace FlightSimulator.Model
 {
-    class ConnectModel
+    public class ConnectModel      //Obsolete
     {
         public Interface.ISettingsModel mySettingsModel;
         public ConnectModel(Interface.ISettingsModel settingsModel)
         {
             mySettingsModel = settingsModel;
-        }
-        void show()
-        {
-            MessageBox.Show(mySettingsModel.FlightCommandPort.ToString());
-            Console.WriteLine(mySettingsModel.FlightCommandPort.ToString());
         }
     }
     

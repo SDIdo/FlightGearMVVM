@@ -8,7 +8,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Views:FlightBoard/>
-        <Button Content="OPEN" Background="Green" Width="50" Height="50" x:Name="settings" Click="Settings_Click"></Button>
+        <Views:Joystick x:Name="joystick" Margin="-192,-49,192.333,48.667"/>
+        <Button Content="Send" Click="Button_Click" Width="50" Height="50" Margin="305,225,438.333,145.667" Background="OrangeRed"/>
+        <Button Content="OPEN" Background="Green" Width="50" Height="50" x:Name="settings" Click="Settings_Click" Margin="380,225,363.333,145.667"></Button>
+        <Button Content="GET" Background="OrangeRed" Width="50" Height="50" x:Name="get" Click="Get_Click" Margin="455,225,288.333,145.667"></Button>
+        <TextBlock FontSize="{Binding ElementName=KnobBase, Path=Value}">Hello</TextBlock>
     </Grid>
 </Window>

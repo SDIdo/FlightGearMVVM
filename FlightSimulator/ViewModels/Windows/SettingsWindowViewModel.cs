@@ -2,6 +2,7 @@
 using FlightSimulator.Model.Interface;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ using System.Windows.Input;
 
 namespace FlightSimulator.ViewModels.Windows
 {
-    public class SettingsWindowViewModel : BaseNotify
+    public class SettingsWindowViewModel : INotifyPropertyChanged
     {
-        private ISettingsModel model;   //How is it eligible to create an instance of an interface?
+        private ISettingsModel model;
 
         public SettingsWindowViewModel(ISettingsModel model)
         {
@@ -27,6 +28,11 @@ namespace FlightSimulator.ViewModels.Windows
                 model.FlightServerIP = value;
                 NotifyPropertyChanged("FlightServerIP");
             }
+        }
+
+        private void NotifyPropertyChanged(string v)
+        {
+            throw new NotImplementedException();
         }
 
         public int FlightCommandPort
@@ -80,6 +86,9 @@ namespace FlightSimulator.ViewModels.Windows
 
         #region CancelCommand
         private ICommand _cancelCommand;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public ICommand CancelCommand
         {
             get

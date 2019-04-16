@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,19 +23,14 @@ namespace FlightSimulator.Views.Windows
         public Settings()
         {
             InitializeComponent();      //They all need to be of the same Model.. somehow to insert it into settings
-            this.DataContext = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());    //
-            //FlightCommandPort.Text;
-            //FlightServerIP.Text = "127";
-            //FlightInfoPort.Text = "225";
-            //FlightCommandPort.Text = "777";
+            ViewModels.Windows.SettingsWindowViewModel vm = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());    //
+            this.DataContext = vm;
+            vm.PropertyChanged += Test;
         }
-        //private void ApplyButton_Click(object sender, RoutedEventArgs e)
-        //{
 
-        //    ViewModels.Windows.SettingsWindowViewModel settingsVM = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());
-        //    //settingsVM.NotifyPropertyChanged("FlightServerIP");
-        //    settingsVM.FlightServerIP = FlightServerIP.Text;
-        //    MessageBox.Show($"The description is : {FlightServerIP.Text}");
-        //}
+        void Test(object a, PropertyChangedEventArgs e)
+        {
+            MessageBox.Show("Hello");
+        }
     }
 }
