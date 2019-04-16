@@ -98,3 +98,6 @@ C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimu
 C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.csproj.CopyComplete
 C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.exe
 C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\FlightSimulator.pdb
+C:\Users\Roy Levy\Source\Repos\ProjectPart3\FlightSimulator\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Roy Levy\source\repos\ProjectPart3\FlightSimulator\obj\Debug\Views\ManualUserControl.g.cs
+C:\Users\Roy Levy\source\repos\ProjectPart3\FlightSimulator\obj\Debug\Views\ManualUserControl.baml

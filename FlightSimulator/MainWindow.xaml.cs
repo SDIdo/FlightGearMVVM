@@ -23,18 +23,11 @@ namespace FlightSimulator
     /// </summary>
     public partial class MainWindow : Window
     {
-        SettingsWindowViewModel settingsVM;
         public MainWindow()
         {
             InitializeComponent();
-            settingsVM = new SettingsWindowViewModel(new ApplicationSettingsModel());
-            DataContext = this;
+            this.DataContext = new ViewModels.MainWindowViewModel(new Model.MainWindowModel());
         }
 
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-            Views.Windows.Settings settings = new Views.Windows.Settings();
-            settings.ShowDialog();
-        }
     }
 }

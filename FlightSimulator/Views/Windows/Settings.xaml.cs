@@ -22,18 +22,7 @@ namespace FlightSimulator.Views.Windows
         public Settings()
         {
             InitializeComponent();
-            this.DataContext = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());    //
-            //FlightServerIP.Text = "127";
-            //FlightInfoPort.Text = "225";
-            //FlightCommandPort.Text = "777";
+            this.DataContext = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());
         }
-        //private void ApplyButton_Click(object sender, RoutedEventArgs e)
-        //{
-
-        //    ViewModels.Windows.SettingsWindowViewModel settingsVM = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());
-        //    //settingsVM.NotifyPropertyChanged("FlightServerIP");
-        //    settingsVM.FlightServerIP = FlightServerIP.Text;
-        //    MessageBox.Show($"The description is : {FlightServerIP.Text}");
-        //}
     }
 }

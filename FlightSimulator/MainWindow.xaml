@@ -6,8 +6,61 @@
         xmlns:local="clr-namespace:FlightSimulator"
         xmlns:Views="clr-namespace:FlightSimulator.Views" x:Class="FlightSimulator.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Content="OPEN" Background="Green" Width="50" Height="50" x:Name="settings" Click="Settings_Click"></Button>
-    </Grid>
+        Title="Flight Simulator" Height="500" Width="900" ResizeMode="NoResize">
+
+    <StackPanel>
+
+        <TextBlock Text="Flight Simulator" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+        <!--This grid is the main grid which seperates the joystick from flight board-->
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--This grid seperates the connect,settings grid from the flight board-->
+            <Grid Grid.Column="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="7*"/>
+                </Grid.RowDefinitions>
+
+                <!--Connect, Settings grid-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Content="Connect" Background="Gray" Width="50" x:Name="connect" Command="{Binding ConnectCommand}" Padding="2" Margin="10"/>
+                    <Button Grid.Column="1" Content="Settings" Background="Gray" Width="50" x:Name="settings" Command="{Binding SettingsCommand}" Padding="2" Margin="10"/>
+                </Grid>
+
+                <Views:FlightBoard Grid.Row="1"/>
+            </Grid>
+
+            <!--TabControl for the Joystick-AutoPilot maneuvering-->
+            <TabControl Grid.Column="1" Margin="10 10 10 10">
+                <TabItem Header="Manual">
+                    <Views:ManualUserControl/>
+                </TabItem>
+
+                <TabItem Header="Auto Pilot">
+                    <StackPanel>
+                        <TextBox Name="myTextBox" Height="330" FontSize="16"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.CanContentScroll="True"
+                             AcceptsReturn="True">
+                        </TextBox>
+                        <TextBlock HorizontalAlignment="Center">Here are the buttons!</TextBlock>
+                    </StackPanel>
+                </TabItem>
+
+            </TabControl>
+        </Grid>
+    </StackPanel>
 </Window>
