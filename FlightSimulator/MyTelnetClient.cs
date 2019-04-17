@@ -99,7 +99,6 @@ namespace FlightSimulator
 
             while (!stop)
             {
-                Thread.Sleep(1000);
                 byte[] receivedBuffer = new byte[256];
 
                 NetworkStream streams = myTcpClient.GetStream();
@@ -206,7 +205,7 @@ namespace FlightSimulator
             // Opens a thread which reads information from server.
             new Thread(delegate ()
             {
-                MessageBox.Show("starting thread!");
+                //MessageBox.Show("starting thread!");
                 this.Read();
             }).Start();
         }

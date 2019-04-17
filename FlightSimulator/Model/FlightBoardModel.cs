@@ -21,10 +21,17 @@ namespace FlightSimulator.Model
 
         ITelnetClient telnetClient;
 
-        public FlightBoardModel(ITelnetClient telnetClient)
+        //public FlightBoardModel(ITelnetClient inputTelnetClient)
+        //{
+        //    this.telnetClient = inputTelnetClient;
+        //    this.telnetClient.PropertyChanged += this.ConvertInfoLine;
+        //}
+
+        public FlightBoardModel()
         {
-            this.telnetClient = telnetClient;
+            this.telnetClient = new MyTelnetClient();
             this.telnetClient.PropertyChanged += this.ConvertInfoLine;
+            telnetClient.Connect("localhost", 5400, 5402);
         }
 
         public void ConvertInfoLine(object sender, PropertyChangedEventArgs e)
@@ -32,17 +39,14 @@ namespace FlightSimulator.Model
             string[] infoArray = e.PropertyName.Split(',');
             string lon = infoArray[1];
             string lat = infoArray[2];
-            MessageBox.Show("lon: " + lon + "lat: " + lat); //instead of this.. draw on the flightboard.
-            int numLon = 0;
-            int numLat = 0;
-            Int32.TryParse(lon, out numLon);
-            Int32.TryParse(lat, out numLat);
+            //MessageBox.Show("lon: " + lon + "lat: " + lat); //instead of this.. draw on the flightboard.
+            double numLon = 0;
+            double numLat = 0;
+            Double.TryParse(lon, out numLon);
+            Double.TryParse(lat, out numLat);
             
             Lon = numLon;
             Lat = numLat;   //Sending to be drawn..
-            
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Lon"));
-            MessageBox.Show("lon,lat after conversion: " + Lon + ", " + Lat);
         }
 
         //The properties implementation
@@ -55,6 +59,7 @@ namespace FlightSimulator.Model
             set
             {
                 lat = value;
+                //MessageBox.Show("Entered set lat from the Model");
                 NotifyPropertyChanged("Lat");
             }
         }
@@ -64,12 +69,14 @@ namespace FlightSimulator.Model
             set
             {
                 lon = value;
+                //MessageBox.Show("Entered set lon from the Model");
                 NotifyPropertyChanged("Lon");
             }
         }
 
         public void NotifyPropertyChanged(string propName)
         {
+            //MessageBox.Show("In FlightBoard propertyChanged func");
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 

@@ -31,7 +31,7 @@ namespace FlightSimulator.Views
         public FlightBoard()
         {
             InitializeComponent();
-            FlightBoardViewModel flightBoardViewModel = new FlightBoardViewModel(new FlightBoardModel(new MyTelnetClient()));
+            FlightBoardViewModel flightBoardViewModel = new FlightBoardViewModel();
             flightBoardViewModel.PropertyChanged += Vm_PropertyChanged;
 
             this.DataContext = flightBoardViewModel;
@@ -53,9 +53,9 @@ namespace FlightSimulator.Views
             plotter.AddLineGraph(planeLocations, 2, "Route");
         }
 
-        private void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e) //WAS PRIVATE! CHANGE BACK WHEN THINGS SETTLE.
+        public void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e) //WAS PRIVATE! CHANGE BACK WHEN THINGS SETTLE.
         {
-            MessageBox.Show("Has entered VM_PropertyChanged!");
+            //MessageBox.Show("Has entered VM_PropertyChanged!");
 
             if (e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon"))
             {
@@ -69,10 +69,12 @@ namespace FlightSimulator.Views
                 //    planeLocations.AppendAsync(Dispatcher, p1);
                 //}
 
-                double lat = ((FlightBoardViewModel)sender).Lat;
-                double lon = ((FlightBoardViewModel)sender).Lon;
-                MessageBox.Show("Took Notice!: " + lon + ", " + lat);
-                Point p1 = new Point(lat, lon);
+                //double lat = ((FlightBoardModel)sender).Lat;    //Scat later change
+                //double lon = ((FlightBoardModel)sender).Lon;
+
+                var _fbView = sender as FlightBoardModel;
+                Console.WriteLine("Took Notice!: " + _fbView.Lon + ", " + _fbView.Lat);
+                Point p1 = new Point(_fbView.Lon, _fbView.Lat);
                 planeLocations.AppendAsync(Dispatcher, p1);
             }
         }

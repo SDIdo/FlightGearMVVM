@@ -39,7 +39,7 @@
                     <Button Grid.Column="1" Content="Settings" Background="Gray" Width="50" x:Name="settings" Command="{Binding SettingsCommand}" Padding="2" Margin="10"/>
                 </Grid>
 
-                <Views:FlightBoard Grid.Row="1"/>
+                <Views:FlightBoard x:Name="flightBoardView" Grid.Row="1"/>
             </Grid>
 
             <!--TabControl for the Joystick-AutoPilot maneuvering-->

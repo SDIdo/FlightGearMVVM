@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 
 using FlightSimulator.ViewModels.Windows;
 using FlightSimulator.Model;
-
+using FlightSimulator.ViewModels;
 
 namespace FlightSimulator
 {
@@ -26,8 +26,7 @@ namespace FlightSimulator
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new ViewModels.MainWindowViewModel(new Model.MainWindowModel());
+            this.DataContext = new MainWindowViewModel(new MainWindowModel());
         }
-
     }
 }
