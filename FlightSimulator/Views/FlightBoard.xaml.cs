@@ -27,14 +27,11 @@ namespace FlightSimulator.Views
     public partial class FlightBoard : UserControl
     {
         ObservableDataSource<Point> planeLocations = null;
-
+        FlightBoardViewModel myViewModel;
         public FlightBoard()
         {
             InitializeComponent();
-            FlightBoardViewModel flightBoardViewModel = new FlightBoardViewModel();
-            flightBoardViewModel.PropertyChanged += Vm_PropertyChanged;
 
-            this.DataContext = flightBoardViewModel;
             //RoutedEventArgs e = new RoutedEventArgs();
             //UserControl_Loaded(this, e);
 
@@ -43,8 +40,13 @@ namespace FlightSimulator.Views
             //DataContext = viewModel;
             //Vm_PropertyChanged(this, new PropertyChangedEventArgs("Lon"));
         }
+        public void SetVM(FlightBoardViewModel viewModel)
+        {
+            myViewModel = viewModel;
+            myViewModel.PropertyChanged += Vm_PropertyChanged;
+        }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+            private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             planeLocations = new ObservableDataSource<Point>();
             // Set identity mapping of point in collection to point on plot

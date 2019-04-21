@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using FlightSimulator.Properties;
 
 using FlightSimulator.ViewModels.Windows;
 using FlightSimulator.Model;
@@ -26,7 +27,21 @@ namespace FlightSimulator
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new FlightBoardUserControlVM(new MainWindowModel());
+            NetworkConnection generalTelnet = new NetworkConnection();
+            this.DataContext = new MainWindowViewModel(new MainWindowModel(generalTelnet));
+
+
+            FlightBoardViewModel flightBoardViewModel = new FlightBoardViewModel(new FlightBoardModel(generalTelnet));
+            this.flightBoardView.SetVM(flightBoardViewModel);
+            this.flightBoardView.DataContext = flightBoardViewModel;
+
+
+
+            CommandCenterUCVM ccucvm = new CommandCenterUCVM(new CommandCenterUCModel(generalTelnet));
+            this.commandCenterUCView.SetVM(ccucvm);
+
+
+
         }
     }
 }

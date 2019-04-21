@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FlightSimulator.Views.ManualUserControl"
+﻿<UserControl x:Class="FlightSimulator.Views.CommandCenterUCView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -68,7 +68,7 @@
             </Grid.ColumnDefinitions>
 
             
-            <Slider Grid.Column="1"  Grid.Row="1" Minimum="0" Maximum="1" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False" Name="ThrottleSlider" ValueChanged="ThrottleSlider_ValueChanged">
+            <Slider Grid.Column="1"  Grid.Row="1" Minimum="0" Maximum="1" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False" x:Name="ThrottleSlider" ValueChanged="ThrottleSlider_ValueChanged">
                 <Slider.LayoutTransform>
                     <RotateTransform Angle="270"/>
                 </Slider.LayoutTransform>
@@ -95,7 +95,7 @@
             </Grid.RowDefinitions>
 
             
-            <Slider Grid.Row="0" Grid.Column="0" Minimum="-1" Maximum="1" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False" Name="RudderSlider" ValueChanged="RudderSlider_ValueChanged"></Slider>
+            <Slider Grid.Row="0" Grid.Column="0" Minimum="-1" Maximum="1" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False" x:Name="RudderSlider" ValueChanged="RudderSlider_ValueChanged"></Slider>
             <TextBlock Grid.Row="0" Grid.Column="1" Name="RudderValueText"></TextBlock>
             <TextBlock Grid.Row="1" Grid.Column="0" FontWeight="Bold" Text="&#8592;rudder&#8594;" HorizontalAlignment="Center"/>
         </Grid>

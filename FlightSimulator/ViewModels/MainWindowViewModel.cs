@@ -62,6 +62,8 @@ namespace FlightSimulator.ViewModels
         }
         private void OnConnectClick()
         {
+
+            myModel.Connect();
             //FlightBoardModel fbm = new FlightBoardModel(new MyTelnetClient());
             //fbm.Connect("localhost", 5400, 5402);
 
@@ -69,7 +71,7 @@ namespace FlightSimulator.ViewModels
             //MyTelnetClient tel = new MyTelnetClient();
             //tel.Connect("localhost", 5400, 5402);
             //FlightBoardModel fbm = new FlightBoardModel(tel);
-            MessageBox.Show("Don't Click! it's a TEST");
+            //MessageBox.Show("Don't Click! it's a TEST");
         }
         #endregion
         #endregion

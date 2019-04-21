@@ -45,7 +45,7 @@
             <!--TabControl for the Joystick-AutoPilot maneuvering-->
             <TabControl Grid.Column="1" Margin="10 10 10 10">
                 <TabItem Header="Manual">
-                    <Views:ManualUserControl/>
+                    <Views:CommandCenterUCView x:Name="commandCenterUCView"/>
                 </TabItem>
 
                 <TabItem Header="Auto Pilot">

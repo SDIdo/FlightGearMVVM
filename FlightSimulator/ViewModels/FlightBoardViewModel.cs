@@ -22,15 +22,13 @@ namespace FlightSimulator.ViewModels
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public FlightBoardViewModel()    //doesnt even enter to these registered funcs
+        public FlightBoardViewModel(FlightBoardModel model)    //doesnt even enter to these registered funcs
         {
-            myModel = new FlightBoardModel();
-
+            myModel = model;
             //this.myModel.PropertyChanged += this.PropertyChanged;
             //MessageBox.Show("Before assigning model's notify to viewModel");
             myModel.PropertyChanged += delegate (object o, PropertyChangedEventArgs e)
             {
-                Console.WriteLine("In FlightBoard ViewModel propertyChanged");
                 this.PropertyChanged?.Invoke(o, e);
             };
         }

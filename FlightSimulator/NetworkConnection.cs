@@ -12,8 +12,9 @@ using System.ComponentModel;
 
 namespace FlightSimulator
 {
-    class NetworkConnection : ITelnetClient
+    public class NetworkConnection : ITelnetClient
     {
+        public static Mutex mutex = new Mutex();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -34,9 +35,9 @@ namespace FlightSimulator
         private TcpClient myTcpClient;
         private TcpListener myTcpListener;
 
-        private string myIP;
-        private int myInfoPort;
-        private int myCommandPort;
+        //private string myIP;
+        //private int myInfoPort;
+        //private int myCommandPort;
         public volatile bool stop = true;
 
         public void Connect(string ip, int infoPort, int commandPort)
@@ -46,9 +47,9 @@ namespace FlightSimulator
                 this.Disconnect();
             }
 
-            myIP = ip;
-            myInfoPort = infoPort;
-            myCommandPort = commandPort;
+            //myIP = ip;
+            //myInfoPort = infoPort;
+            //myCommandPort = commandPort;
             var ipNum = Dns.GetHostEntry(ip).AddressList[1];
             myTcpListener = new TcpListener(ipNum, infoPort); // set server.
             myTcpClient = default(TcpClient);
@@ -105,7 +106,7 @@ namespace FlightSimulator
 
                 n = streams.Read(receivedBuffer, 0, receivedBuffer.Length);
 
-                Console.WriteLine("NOW!");
+                Console.WriteLine("NOW! in read (receive)");
                 if (n < 0)
                 {
                     Console.WriteLine("Problem with reading");
@@ -121,7 +122,6 @@ namespace FlightSimulator
 
                 index = information.IndexOf('\n');
                 Console.WriteLine("index is: " + index);
-                Console.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                 // if the line terminator was not found, append all of the information.
                 if (index < 0)
                 {
@@ -169,30 +169,41 @@ namespace FlightSimulator
          */
         public void Write(string command)
         {
-            myTcpClient = new TcpClient(myIP, myCommandPort); // connect as client.
-            MessageBox.Show("connected for sending");
+            mutex.WaitOne();
+            string ip = Properties.Settings.Default.FlightServerIP;
+            int sendPort = Properties.Settings.Default.FlightCommandPort;
+            //MessageBox.Show("connect with port:" + sendPort.ToString());
+            //MessageBox.Show("connect with ip:" + ip);
+            //string ipName = Dns.GetHostByAddress(ip).HostName;
+            if (ip == "127.0.0.1")  // @TODO: later get host by address.
+            {
+                ip = "localhost";
+            }
 
-            command = "set controls/flight/rudder 1";
+            myTcpClient = new TcpClient(ip, sendPort); // connect as client.
+
+            //command = "set controls/flight/rudder 1";
             //msg = (msg.Equals(msg0)) ? msg1 : msg0;
             //msg = message.Text; //Take whatever that is in the input
 
             //feedbackTXT.Text += "msg: " + msg + "\n";       //Write server respond on xaml feedback text
             //Console.WriteLine("msg: " + msg);
-            int byteCount = Encoding.ASCII.GetByteCount(command + "\r\n"); //how many bytes
+            int byteCount = Encoding.ASCII.GetByteCount(command); //how many bytes
             byte[] sendData = new byte[byteCount];  //create a buffer
 
-            sendData = Encoding.ASCII.GetBytes(command + "\r\n");   //puts the message in the buffer
+            sendData = Encoding.ASCII.GetBytes(command);   //puts the message in the buffer
             //feedbackTXT.Text += "Encoded\n";
             NetworkStream stream = myTcpClient.GetStream();  //creates a network stream
 
             stream.Write(sendData, 0, sendData.Length); //network stream to transfer what's in buffer
             //feedbackTXT.Text += "written to server and server said:\n";
 
-            byte[] feedback = new byte[256];
+            //byte[] feedback = new byte[256];
 
-            stream.Read(feedback, 0, 256);
+            //stream.Read(feedback, 0, 256);
 
-            string fromServer = new string(Encoding.UTF8.GetChars(feedback));
+            //string fromServer = new string(Encoding.UTF8.GetChars(feedback));
+            mutex.ReleaseMutex();
 
             //feedbackTXT.Text += fromServer + "\n";
         }
@@ -203,7 +214,7 @@ namespace FlightSimulator
         public void Start()
         {
             // Opens a thread which reads information from server.
-            new Thread(delegate ()
+            new Thread( ()=>
             {
                 //MessageBox.Show("starting thread!");
                 this.Read();

@@ -1,4 +1,5 @@
 ﻿using FlightSimulator.Model.EventArgs;
+using FlightSimulator.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,15 @@ namespace FlightSimulator.Views
     /// </summary>
     public partial class Joystick : UserControl
     {
+        CommandCenterUCVM myViewModel;
+        public void SetVM(CommandCenterUCVM viewModel)
+        {
+            myViewModel = viewModel;
+            Moved += delegate (Joystick o, VirtualJoystickEventArgs e)
+            {
+                myViewModel.Write(e.Aileron, e.Elevator);
+            };
+        }
         /// <summary>Current Aileron</summary>
         public static readonly DependencyProperty AileronProperty =
             DependencyProperty.Register("Aileron", typeof(double), typeof(Joystick),null);
@@ -134,10 +144,12 @@ namespace FlightSimulator.Views
 
         private void Knob_MouseMove(object sender, MouseEventArgs e)
         {
+
             ///!!!!!!!!!!!!!!!!!
             /// YOU MUST CHANGE THE FUNCTION!!!!
             ///!!!!!!!!!!!!!!
             if (!Knob.IsMouseCaptured) return;
+            
 
             Point newPos = e.GetPosition(Base);
 
@@ -153,14 +165,15 @@ namespace FlightSimulator.Views
             knobPosition.X = deltaPos.X;
             knobPosition.Y = deltaPos.Y;
 
-            if (Moved == null ||
-                (!(Math.Abs(_prevAileron - Aileron) > AileronStep) && !(Math.Abs(_prevElevator - Elevator) > ElevatorStep)))
+
+            //(!(Math.Abs(_prevAileron - Aileron) > AileronStep) && !(Math.Abs(_prevElevator - Elevator) > ElevatorStep))
+            if ((Moved == null) || ((Math.Abs(_prevAileron - Aileron) > AileronStep) || (Math.Abs(_prevElevator - Elevator) > ElevatorStep))){ 
                 return;
+            }
 
             Moved?.Invoke(this, new VirtualJoystickEventArgs { Aileron = Aileron, Elevator = Elevator });
             _prevAileron = Aileron;
             _prevElevator = Elevator;
-
         }
 
         private void Knob_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

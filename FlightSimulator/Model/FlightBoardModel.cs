@@ -19,23 +19,24 @@ namespace FlightSimulator.Model
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        ITelnetClient telnetClient;
+        NetworkConnection myNetwork;
 
-        //public FlightBoardModel(ITelnetClient inputTelnetClient)
+        //public FlightBoardModel(ImyNetwork inputmyNetwork)
         //{
-        //    this.telnetClient = inputTelnetClient;
-        //    this.telnetClient.PropertyChanged += this.ConvertInfoLine;
+        //    this.myNetwork = inputmyNetwork;
+        //    this.myNetwork.PropertyChanged += this.ConvertInfoLine;
         //}
 
-        public FlightBoardModel()
+        public FlightBoardModel(NetworkConnection network)
         {
-            this.telnetClient = new NetworkConnection();
-            this.telnetClient.PropertyChanged += this.ConvertInfoLine;
-            telnetClient.Connect("localhost", 5400, 5402);
+            this.myNetwork = network;
+            this.myNetwork.PropertyChanged += this.ConvertInfoLine;
+            //myNetwork.Connect("localhost", 5400, 5402);
         }
 
         public void ConvertInfoLine(object sender, PropertyChangedEventArgs e)
         {
+            NetworkConnection.mutex.WaitOne();
             string[] infoArray = e.PropertyName.Split(',');
             string lon = infoArray[1];
             string lat = infoArray[2];
@@ -47,6 +48,7 @@ namespace FlightSimulator.Model
             
             Lon = numLon;
             Lat = numLat;   //Sending to be drawn..
+            NetworkConnection.mutex.ReleaseMutex();
         }
 
         //The properties implementation
@@ -80,24 +82,19 @@ namespace FlightSimulator.Model
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public void Connect(string ip, int infoPort, int commandPort)
-        {
-            this.telnetClient.Connect(ip, infoPort, commandPort);
-        }
-
         public void Disconnect()
         {
-            this.telnetClient.Disconnect();
+            this.myNetwork.Disconnect();
         }
 
         public void Start()
         {
-            this.telnetClient.Start();
+            this.myNetwork.Start();
         }
 
         public void Write(string command)
         {
-            this.telnetClient.Write(command);
+            this.myNetwork.Write(command);
         }
 
     }
