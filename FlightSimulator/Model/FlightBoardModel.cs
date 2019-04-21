@@ -29,7 +29,7 @@ namespace FlightSimulator.Model
 
         public FlightBoardModel()
         {
-            this.telnetClient = new MyTelnetClient();
+            this.telnetClient = new NetworkConnection();
             this.telnetClient.PropertyChanged += this.ConvertInfoLine;
             telnetClient.Connect("localhost", 5400, 5402);
         }

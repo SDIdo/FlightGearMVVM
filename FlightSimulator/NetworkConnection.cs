@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace FlightSimulator
 {
-    class MyTelnetClient : ITelnetClient
+    class NetworkConnection : ITelnetClient
     {
 
         public event PropertyChangedEventHandler PropertyChanged;

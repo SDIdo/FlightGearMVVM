@@ -26,7 +26,7 @@ namespace FlightSimulator
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainWindowViewModel(new MainWindowModel());
+            this.DataContext = new FlightBoardUserControlVM(new MainWindowModel());
         }
     }
 }
