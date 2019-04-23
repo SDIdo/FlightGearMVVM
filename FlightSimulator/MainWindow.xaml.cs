@@ -11,11 +11,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using FlightSimulator.Properties;
 
 using FlightSimulator.ViewModels.Windows;
 using FlightSimulator.Model;
 using FlightSimulator.ViewModels;
-using FlightSimulator.Views;
 
 namespace FlightSimulator
 {
@@ -24,49 +24,24 @@ namespace FlightSimulator
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        static MyTelnetClient telnet = new MyTelnetClient();
-        FlightBoardModel flightBoardModel = new FlightBoardModel(telnet);   //later improve style
-        SettingsWindowViewModel settingsVM;
-        
-
-
         public MainWindow()
         {
-            InitializeComponent();  //Starts each view class 
-            SettingsWindowViewModel settingsVM = new SettingsWindowViewModel(new ApplicationSettingsModel());
-            //joystick.DataContext = joystickVM;
-
-            //joystickVM = new JoystickViewModel(new JoystickModel(telnet));
-            //FlightBoardViewModel fbvm = new FlightBoardViewModel(flightBoardModel);
-            //fbvm.Lon = 3;
+            InitializeComponent();
+            NetworkConnection generalTelnet = new NetworkConnection();
+            this.DataContext = new MainWindowViewModel(new MainWindowModel(generalTelnet));
 
 
+            FlightBoardViewModel flightBoardViewModel = new FlightBoardViewModel(new FlightBoardModel(generalTelnet));
+            this.flightBoardView.SetVM(flightBoardViewModel);
+            this.flightBoardView.DataContext = flightBoardViewModel;
 
 
-            ////SCAT
-            //MyTelnetClient telNetClient = new MyTelnetClient();
-            //FlightBoardModel flightboardmodel = new FlightBoardModel(telNetClient);
-            //FlightBoardViewModel flightboardviewmodel = new FlightBoardViewModel(flightboardmodel);
-            //FlightBoard flightboard = new FlightBoard();    //won't effect anything.. the view initializes
-            //                                                //those classes to itself
 
-        }
+            CommandCenterUCVM ccucvm = new CommandCenterUCVM(new CommandCenterUCModel(generalTelnet));
+            this.commandCenterUCView.SetVM(ccucvm);
 
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-            Views.Windows.Settings settings = new Views.Windows.Settings();
-            settings.ShowDialog();
-        }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            flightBoardModel.connect("127.0.0.1", 5402);    //scatting connection
-        }
 
-        private void Get_Click(object sender, RoutedEventArgs e)
-        {
-            flightBoardModel.receive("127.0.0.1", 5402);
         }
     }
 }

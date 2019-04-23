@@ -14,55 +14,35 @@ namespace FlightSimulator.ViewModels
 
     public class FlightBoardViewModel : INotifyPropertyChanged
     {
-        private double lon;
-        private double lat;
-
+        private FlightBoardModel myModel;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropetyChanged(string name)
+        public void NotifyPropertyChanged(string propName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public IFlightBoardModel myModel;
-
-        public FlightBoardViewModel(IFlightBoardModel model)    //doesnt even enter to these registered funcs
+        public FlightBoardViewModel(FlightBoardModel model)    //doesnt even enter to these registered funcs
         {
             myModel = model;
-            myModel.PropertyChanged += ModelToView;
-
+            //this.myModel.PropertyChanged += this.PropertyChanged;
+            //MessageBox.Show("Before assigning model's notify to viewModel");
+            myModel.PropertyChanged += delegate (object o, PropertyChangedEventArgs e)
+            {
+                this.PropertyChanged?.Invoke(o, e);
+            };
         }
 
-        void ModelToView(object sender, PropertyChangedEventArgs e)
-        {
-            MessageBox.Show("HAHA!!");
-            OnPropetyChanged(e.PropertyName);
-        }
 
-        
         public double Lon
         {
-            set
-            {
-                this.lon = value;
-                OnPropetyChanged("Lon");
-            }
-            get
-            {
+            get {
                 return myModel.Lon;
             }
         }
 
         public double Lat
         {
-            set
-            {
-                this.lat = value;
-                OnPropetyChanged("Lat");
-            }
             get
             {
                 return myModel.Lat;

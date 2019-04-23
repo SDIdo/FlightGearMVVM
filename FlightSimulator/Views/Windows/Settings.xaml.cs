@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,15 +21,8 @@ namespace FlightSimulator.Views.Windows
     {
         public Settings()
         {
-            InitializeComponent();      //They all need to be of the same Model.. somehow to insert it into settings
-            ViewModels.Windows.SettingsWindowViewModel vm = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());    //
-            this.DataContext = vm;
-            vm.PropertyChanged += Test;
-        }
-
-        void Test(object a, PropertyChangedEventArgs e)
-        {
-            MessageBox.Show("Hello");
+            InitializeComponent();
+            this.DataContext = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());
         }
     }
 }
