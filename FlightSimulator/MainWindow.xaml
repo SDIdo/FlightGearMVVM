@@ -33,34 +33,36 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Content="Connect" Background="Gray" Width="50" x:Name="connect" Command="{Binding ConnectCommand}" Padding="2" Margin="10"/>
-                    <Button Grid.Column="1" Content="Settings" Background="Gray" Width="50" x:Name="settings" Command="{Binding SettingsCommand}" Padding="2" Margin="10"/>
+
+                    <Button Grid.Column="0" Content="Disconnect" Background="Gray" Width="65" x:Name="disconnect" Command="{Binding DisconnectCommand}" Padding="2" Margin="10">
+                        </Button>
+                            <Button Grid.Column="1" Content="Connect" Background="Gray" Width="65" x:Name="connect" Command="{Binding ConnectCommand}" Padding="2" Margin="10">
+                        <!--<Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger Property= Value="True">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>-->
+                    </Button>
+
+
+                        <Button Grid.Column="2" Content="Settings" Background="Gray" Width="65" x:Name="settings" Command="{Binding SettingsCommand}" Padding="2" Margin="10"/>
                 </Grid>
 
                 <Views:FlightBoard x:Name="flightBoardView" Grid.Row="1"/>
             </Grid>
 
             <!--TabControl for the Joystick-AutoPilot maneuvering-->
-            <TabControl Grid.Column="1" Margin="10 10 10 10">
-                <TabItem Header="Manual">
-                    <Views:CommandCenterUCView x:Name="commandCenterUCView"/>
-                </TabItem>
 
-                <TabItem Header="Auto Pilot">
-                    <StackPanel>
-                        <TextBox Name="myTextBox" Height="330" FontSize="16"
-                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             ScrollViewer.CanContentScroll="True"
-                             AcceptsReturn="True">
-                        </TextBox>
-                        <TextBlock HorizontalAlignment="Center">Here are the buttons!</TextBlock>
-                    </StackPanel>
-                </TabItem>
+            <Views:CommandCenterUCView Grid.Column="1" Margin="10 10 10 10" x:Name="commandCenterUCView"/>
 
-            </TabControl>
+
         </Grid>
     </StackPanel>
 </Window>

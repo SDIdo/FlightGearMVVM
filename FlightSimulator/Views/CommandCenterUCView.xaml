@@ -6,98 +6,139 @@
              xmlns:local="clr-namespace:FlightSimulator.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <TabControl>
+        <TabItem Header="Manual">
+            <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <!--Inner grid for the upper aileron text-->
-        <Grid Grid.Column="1" Grid.Row="0">
+                <!--Inner grid for the upper aileron text-->
+                <Grid Grid.Column="1" Grid.Row="0">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold">&#8592;aileron&#8594;</TextBlock>
-            <TextBlock Grid.Column="1" Name="AileronValueText" HorizontalAlignment="Right" Text="{Binding Aileron}"></TextBlock>
-        </Grid>
+                    <TextBlock Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold">&#8592;aileron&#8594;</TextBlock>
+                    <TextBlock Grid.Column="1" Name="AileronValueText" HorizontalAlignment="Right" Text="{Binding Aileron}"></TextBlock>
+                </Grid>
 
-        <!--Inner grid for the righthandside elevator text-->
-        <Grid Grid.Column="2" Grid.Row="1">
+                <!--Inner grid for the righthandside elevator text-->
+                <Grid Grid.Column="2" Grid.Row="1">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5*"/>
-            </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="1" VerticalAlignment="Center" FontWeight="Bold">&#8592;elevator&#8594;
-                <TextBlock.LayoutTransform>
-                    <RotateTransform Angle="90"/>
-                </TextBlock.LayoutTransform>
-            </TextBlock>
-            <TextBlock Grid.Row="0" Name="ElevatorValueText" VerticalAlignment="Bottom" Text="{Binding Elevator}">
-                <TextBlock.LayoutTransform>
-                    <RotateTransform Angle="90"/>
-                </TextBlock.LayoutTransform>
-            </TextBlock>
-        </Grid>
+                    <TextBlock Grid.Row="1" VerticalAlignment="Center" FontWeight="Bold">&#8592;elevator&#8594;
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="90"/>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                    <TextBlock Grid.Row="0" Name="ElevatorValueText" VerticalAlignment="Bottom" Text="{Binding Elevator}">
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="90"/>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Grid>
 
-        <local:Joystick x:Name="JoystickView" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                <local:Joystick x:Name="JoystickView" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
 
-        <!--Inner grid for the leftside throttle slider-->
-        <Grid Grid.Row="1" Grid.Column="0" Margin="1,1,1,1">
+                <!--Inner grid for the leftside throttle slider-->
+                <Grid Grid.Row="1" Grid.Column="0" Margin="1,1,1,1">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5*"/>
-            </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            
-            <Slider Grid.Column="1"  Grid.Row="1" Minimum="0" Maximum="1" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False" x:Name="ThrottleSlider" ValueChanged="ThrottleSlider_ValueChanged">
-                <Slider.LayoutTransform>
-                    <RotateTransform Angle="270"/>
-                </Slider.LayoutTransform>
-            </Slider>
-            <TextBlock Grid.Column="1" Grid.Row="0" Name="ThrottleValueText"></TextBlock>
-            <TextBlock Grid.Column="0" Grid.Row="1" FontWeight="Bold" Text="&#8592;throttle&#8594;" VerticalAlignment="Center">
-                <TextBlock.LayoutTransform>
-                    <RotateTransform Angle="90"/>
-                </TextBlock.LayoutTransform>
-            </TextBlock>
-        </Grid>
 
-        <!--Inner grid for the bottom rudder slider-->
-        <Grid Grid.Row="2" Grid.Column="1" Margin="1,1,1,1">
+                    <Slider Grid.Column="1"  Grid.Row="1" Minimum="0" Maximum="1" TickFrequency="0.1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" x:Name="ThrottleSlider" Value="{Binding Throttle}">
+                        <Slider.LayoutTransform>
+                            <RotateTransform Angle="270"/>
+                        </Slider.LayoutTransform>
+                    </Slider>
+                    <Label Name="ThrottleValue" ContentStringFormat="N1"  Content="{Binding ElementName=ThrottleSlider, Path=Value}" Grid.Row="0" Grid.Column="1"/>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Name="ThrottleValueText"></TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="1" FontWeight="Bold" Text="&#8592;throttle&#8594;" VerticalAlignment="Center">
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="90"/>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Grid>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                <!--Inner grid for the bottom rudder slider-->
+                <Grid Grid.Row="2" Grid.Column="1" Margin="1,1,1,1">
 
-            
-            <Slider Grid.Row="0" Grid.Column="0" Minimum="-1" Maximum="1" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False" x:Name="RudderSlider" ValueChanged="RudderSlider_ValueChanged"></Slider>
-            <TextBlock Grid.Row="0" Grid.Column="1" Name="RudderValueText"></TextBlock>
-            <TextBlock Grid.Row="1" Grid.Column="0" FontWeight="Bold" Text="&#8592;rudder&#8594;" HorizontalAlignment="Center"/>
-        </Grid>
-    </Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+
+                    <Slider Grid.Row="0" Grid.Column="0" Minimum="-1" Maximum="1" TickFrequency="0.05" IsSnapToTickEnabled="True"  TickPlacement="BottomRight" x:Name="RudderSlider" Value="{Binding Rudder}"></Slider>
+                    <Label Name="RudderValue" ContentStringFormat="N2" Content="{Binding ElementName=RudderSlider, Path=Value}" Grid.Column="1"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Name="RudderValueText"></TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0" FontWeight="Bold" Text="&#8592;rudder&#8594;" HorizontalAlignment="Center"/>
+                </Grid>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Auto Pilot">
+            <StackPanel>
+                <TextBox x:Name="AutopilotTextBox" Height="330" FontSize="16"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.CanContentScroll="True"
+                             AcceptsReturn="True" Text="{Binding AutopilotCommandText}" Background="{Binding AutopilotTextColor}">
+                    <!--<TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Background" Value="pink"/>
+                            <Style.Triggers>
+                                <Trigger Property= "Text" Value="">
+                                    <Setter Property="Background" Value="pink"/>
+                                </Trigger>
+
+                                <DataTrigger Binding ="{ Binding ElementName = AutopilotOKButton, Path = IsPressed}" Value="true">
+                                    <Setter Property="Background" Value="pink"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>-->
+                </TextBox>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Command="{Binding AutopilotOKCommand}" Margin="100 5 10 5" x:Name="AutopilotOKButton">OK</Button>
+                    <Button Grid.Column="1" Command="{Binding AutopilotClearCommand}" Margin="10 5 100 5" x:Name="AutopilotClearButton">Clear</Button>
+                </Grid>
+            </StackPanel>
+        </TabItem>
+
+    </TabControl>
 </UserControl>

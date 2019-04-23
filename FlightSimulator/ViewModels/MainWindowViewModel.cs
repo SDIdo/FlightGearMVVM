@@ -11,27 +11,14 @@ using System.ComponentModel;
 
 namespace FlightSimulator.ViewModels
 {
-    class MainWindowViewModel : INotifyPropertyChanged
+    class MainWindowViewModel : BaseNotify
     {
         private MainWindowModel myModel;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void NotifyPropertyChanged(string propName)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
 
         public MainWindowViewModel(MainWindowModel model)
         {
             this.myModel = model;
         }
-
-
-
-
-
-
 
         #region Commands
         #region ClickCommand
@@ -62,16 +49,23 @@ namespace FlightSimulator.ViewModels
         }
         private void OnConnectClick()
         {
-
             myModel.Connect();
-            //FlightBoardModel fbm = new FlightBoardModel(new MyTelnetClient());
-            //fbm.Connect("localhost", 5400, 5402);
+        }
+        #endregion
 
 
-            //MyTelnetClient tel = new MyTelnetClient();
-            //tel.Connect("localhost", 5400, 5402);
-            //FlightBoardModel fbm = new FlightBoardModel(tel);
-            //MessageBox.Show("Don't Click! it's a TEST");
+        #region DisconnectCommand
+        private ICommand _disconnectCommand;
+        public ICommand DisconnectCommand
+        {
+            get
+            {
+                return _disconnectCommand ?? (_disconnectCommand = new CommandHandler(() => OnDisconnectClick()));
+            }
+        }
+        private void OnDisconnectClick()
+        {
+            myModel.Disconnect();
         }
         #endregion
         #endregion

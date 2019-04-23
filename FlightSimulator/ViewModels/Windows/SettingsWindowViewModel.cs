@@ -12,16 +12,10 @@ using System.Windows.Input;
 namespace FlightSimulator.ViewModels.Windows
 {
 
-    public class SettingsWindowViewModel : INotifyPropertyChanged
+    public class SettingsWindowViewModel : BaseNotify
     {
 
-        public event PropertyChangedEventHandler PropertyChanged;
         private ISettingsModel model;
-
-        public void NotifyPropertyChanged(string propName)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
 
         public SettingsWindowViewModel(ISettingsModel model)
         {

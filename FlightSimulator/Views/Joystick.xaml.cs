@@ -27,7 +27,7 @@ namespace FlightSimulator.Views
         public void SetVM(CommandCenterUCVM viewModel)
         {
             myViewModel = viewModel;
-            Moved += delegate (Joystick o, VirtualJoystickEventArgs e)
+            Moved += delegate (Joystick o, VirtualJoystickEventArgs e)  //TODO make it a command
             {
                 myViewModel.Write(e.Aileron, e.Elevator);
             };

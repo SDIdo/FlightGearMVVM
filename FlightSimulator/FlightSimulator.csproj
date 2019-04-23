@@ -72,6 +72,7 @@
     <Compile Include="Model\Interface\ISettingsModel.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="NetworkConnection.cs" />
+    <Compile Include="ViewModels\BaseNotify.cs" />
     <Compile Include="ViewModels\FlightBoardViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\CommandCenterUCVM.cs" />

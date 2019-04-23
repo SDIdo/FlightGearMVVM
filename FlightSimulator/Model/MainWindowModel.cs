@@ -32,5 +32,10 @@ namespace FlightSimulator.Model
             }
             myTelnet.Connect(ip, receivePort, sendPort);
         }
+        public void Disconnect()
+        {
+            MessageBox.Show("in Main Model Disconnected");
+            myTelnet.Disconnect();
+        }
     }
 }

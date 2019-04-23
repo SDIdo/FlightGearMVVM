@@ -32,7 +32,7 @@ namespace FlightSimulator
                 }
         }
 
-        private TcpClient myTcpClient;
+        //private TcpClient myTcpClient;
         private TcpListener myTcpListener;
 
         //private string myIP;
@@ -46,21 +46,12 @@ namespace FlightSimulator
             {
                 this.Disconnect();
             }
-
-            //myIP = ip;
-            //myInfoPort = infoPort;
-            //myCommandPort = commandPort;
             var ipNum = Dns.GetHostEntry(ip).AddressList[1];
             myTcpListener = new TcpListener(ipNum, infoPort); // set server.
-            myTcpClient = default(TcpClient);
+            //myTcpClient = default(TcpClient);
 
             stop = false;
             this.Start();
-
-            // now can continue to sending actions.
-
-            //Console.WriteLine("now continuing with main!!");
-            //this.Write("s");
         }
 
         /**
@@ -69,7 +60,7 @@ namespace FlightSimulator
         public void Disconnect()
         {
             stop = true;
-            this.myTcpListener.Stop();
+            MessageBox.Show("NEtwork Disconnect");
         }
 
         /**
@@ -89,7 +80,7 @@ namespace FlightSimulator
                 Console.Read();
             }
 
-            myTcpClient = myTcpListener.AcceptTcpClient();  //goes to sleep until interupt
+            TcpClient readTcpClient = myTcpListener.AcceptTcpClient();  //goes to sleep until interupt
             MessageBox.Show("client accepted :)");
             int index = 0;
             int n = 0;
@@ -101,10 +92,11 @@ namespace FlightSimulator
             while (!stop)
             {
                 byte[] receivedBuffer = new byte[256];
-
-                NetworkStream streams = myTcpClient.GetStream();
+                mutex.WaitOne();
+                NetworkStream streams = readTcpClient.GetStream();
 
                 n = streams.Read(receivedBuffer, 0, receivedBuffer.Length);
+                mutex.ReleaseMutex();
 
                 Console.WriteLine("NOW! in read (receive)");
                 if (n < 0)
@@ -145,23 +137,9 @@ namespace FlightSimulator
 
                     remainder = "";
                     isDataEnd = false;
-
-                    /** Split by commas */
-
-                    /*string[] infoArray = remainder.Split(',');*/
-                    //string lon = infoArray[1];
-                    //string lat = infoArray[2];
-                    //MessageBox.Show("lon: " + lon + "lat: " + lat); //instead of this.. draw on the flightboard.
-                    //int numLon = 0;
-                    //int numLat = 0;
-                    //Int32.TryParse(lon, out numLon);
-                    //Int32.TryParse(lat, out numLat);
-                    //double Lon = numLon;
-                    //double Lat = numLat;   //Sending to be drawn..
-                    //MessageBox.Show("lon,lat after conversion: " + Lon + ", " + Lat);
-
                 }
             }
+            this.myTcpListener.Stop();
         }
 
         /**
@@ -169,10 +147,9 @@ namespace FlightSimulator
          */
         public void Write(string command)
         {
-            mutex.WaitOne();
+            //mutex.WaitOne();
             string ip = Properties.Settings.Default.FlightServerIP;
             int sendPort = Properties.Settings.Default.FlightCommandPort;
-            //MessageBox.Show("connect with port:" + sendPort.ToString());
             //MessageBox.Show("connect with ip:" + ip);
             //string ipName = Dns.GetHostByAddress(ip).HostName;
             if (ip == "127.0.0.1")  // @TODO: later get host by address.
@@ -180,32 +157,17 @@ namespace FlightSimulator
                 ip = "localhost";
             }
 
-            myTcpClient = new TcpClient(ip, sendPort); // connect as client.
-
-            //command = "set controls/flight/rudder 1";
-            //msg = (msg.Equals(msg0)) ? msg1 : msg0;
-            //msg = message.Text; //Take whatever that is in the input
-
-            //feedbackTXT.Text += "msg: " + msg + "\n";       //Write server respond on xaml feedback text
-            //Console.WriteLine("msg: " + msg);
+            TcpClient writeTcpClient = new TcpClient(ip, sendPort); // connect as client.
             int byteCount = Encoding.ASCII.GetByteCount(command); //how many bytes
             byte[] sendData = new byte[byteCount];  //create a buffer
 
             sendData = Encoding.ASCII.GetBytes(command);   //puts the message in the buffer
-            //feedbackTXT.Text += "Encoded\n";
-            NetworkStream stream = myTcpClient.GetStream();  //creates a network stream
+            //MessageBox.Show("Current Command is: " + sendData.ToString());
+            NetworkStream stream = writeTcpClient.GetStream();  //creates a network stream
 
             stream.Write(sendData, 0, sendData.Length); //network stream to transfer what's in buffer
-            //feedbackTXT.Text += "written to server and server said:\n";
-
-            //byte[] feedback = new byte[256];
-
-            //stream.Read(feedback, 0, 256);
-
-            //string fromServer = new string(Encoding.UTF8.GetChars(feedback));
-            mutex.ReleaseMutex();
-
-            //feedbackTXT.Text += fromServer + "\n";
+            writeTcpClient.Close();
+            stream.Close();
         }
 
         /**

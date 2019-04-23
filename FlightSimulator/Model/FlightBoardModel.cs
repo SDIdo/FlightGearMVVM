@@ -36,7 +36,6 @@ namespace FlightSimulator.Model
 
         public void ConvertInfoLine(object sender, PropertyChangedEventArgs e)
         {
-            NetworkConnection.mutex.WaitOne();
             string[] infoArray = e.PropertyName.Split(',');
             string lon = infoArray[1];
             string lat = infoArray[2];
@@ -48,7 +47,6 @@ namespace FlightSimulator.Model
             
             Lon = numLon;
             Lat = numLat;   //Sending to be drawn..
-            NetworkConnection.mutex.ReleaseMutex();
         }
 
         //The properties implementation
