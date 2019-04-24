@@ -5,45 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlightSimulator.Views.Windows"
         mc:Ignorable="d"
-        Title="Settings" Height="450" Width="800">
+        Title="Settings" Height="200" Width="300" ResizeMode="NoResize">
 
     <Grid>
-        <ScrollViewer>
-            <Border Padding="10">
-                <StackPanel>
-                    <!-- Bottons -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width ="*"/>
-                            <ColumnDefinition Width ="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height ="*"/>
-                            <RowDefinition Height ="*"/>
-                            <RowDefinition Height ="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Flight Server IP:" Margin="0 0 0 0" Grid.Row="0"/>
-                        <TextBlock Text="Flight Info Port:" Margin ="0 5 0 0" Grid.Row ="1"/>
-                        <TextBlock Text="Flight Command Port:" Margin="0 5 0 0" Grid.Row ="2"/>
+        <Border Padding="10">
+            <StackPanel>
+                <!-- Bottons -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height ="*"/>
+                        <RowDefinition Height ="*"/>
+                        <RowDefinition Height ="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Flight Server IP:" Margin="0 0 0 0" Grid.Row="0"/>
+                    <TextBlock Text="Flight Info Port:" Margin ="0 5 0 0" Grid.Row ="1"/>
+                    <TextBlock Text="Flight Command Port:" Margin="0 5 0 0" Grid.Row ="2"/>
 
-                        <TextBox x:Name="FlightServerIP" Margin="0 0" Grid.Column ="1" Grid.Row ="0" Text="{Binding FlightServerIP}"/>
-                        <TextBox x:Name="FlightInfoPort" Margin="0 5 0 0" Grid.Column ="1" Grid.Row ="1" Text="{Binding FlightInfoPort}"/>
-                        <TextBox x:Name="FlightCommandPort" Margin="0 5 0 0" Grid.Column ="1" Grid.Row ="2" Text="{Binding FlightCommandPort}"/>
+                    <TextBox x:Name="FlightServerIP" Margin="0 0" Grid.Column ="1" Grid.Row ="0" Text="{Binding FlightServerIP}"/>
+                    <TextBox x:Name="FlightInfoPort" Margin="0 5 0 0" Grid.Column ="1" Grid.Row ="1" Text="{Binding FlightInfoPort}"/>
+                    <TextBox x:Name="FlightCommandPort" Margin="0 5 0 0" Grid.Column ="1" Grid.Row ="2" Text="{Binding FlightCommandPort}"/>
 
-                    </Grid>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width ="*"/>
-                            <ColumnDefinition Width ="*"/>
-                        </Grid.ColumnDefinitions>
-                        <!--<Button x:Name="OK" Click="ApplyButton_Click" Width="60" Height="30" Margin="200 10 0 0" Grid.Column="0" Content="OK" Background="Gray"/>-->
-                        <!--<Button x:Name="Cancel" Click="ApplyButton_Click" Width="60" Height="30" Margin="0 10 200 0" Grid.Column="1" Content="Cancel" Background="Gray"/>-->
-                        <Button Grid.Column="0" Command="{Binding ClickCommand}">OK</Button>
-                        <Button Grid.Column="1" Command="{Binding CancelCommand}">Cancel</Button>
-                    </Grid>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!--<Button x:Name="OK" Click="ApplyButton_Click" Width="60" Height="30" Margin="200 10 0 0" Grid.Column="0" Content="OK" Background="Gray"/>-->
+                    <!--<Button x:Name="Cancel" Click="ApplyButton_Click" Width="60" Height="30" Margin="0 10 200 0" Grid.Column="1" Content="Cancel" Background="Gray"/>-->
+                    <Button Grid.Column="0" Command="{Binding ClickCommand}" Margin="40 10 20 0" Grid.Row="3">OK</Button>
+                    <Button Grid.Column="1" Command="{Binding CancelCommand}" Margin="20 10 40 0" Grid.Row="3">Cancel</Button>
+                </Grid>
 
-                </StackPanel>
-            </Border>
-        </ScrollViewer>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

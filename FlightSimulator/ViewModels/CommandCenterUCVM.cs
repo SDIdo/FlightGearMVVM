@@ -13,6 +13,17 @@ namespace FlightSimulator.ViewModels
 {
     public class CommandCenterUCVM : BaseNotify
     {
+        private bool isPink;
+
+        public bool IsPink
+        {
+            get { return  isPink; }
+            set {  isPink = value;
+                NotifyPropertyChanged("IsPink");
+            }
+        }
+
+
 
         private string autopilotCommandText;
 
@@ -23,31 +34,10 @@ namespace FlightSimulator.ViewModels
             {
                 autopilotCommandText = value;
                 NotifyPropertyChanged(autopilotCommandText); //Signalling to the text box
-
-                if (String.Compare(value, "") == 0)
-                {
-                    AutopilotTextColor = "white";
-                }
-                else
-                {
-                    AutopilotTextColor = "pink";
-                }
+                IsPink = true;
             }
         }
 
-        private string autopilotTextColor;
-        public string AutopilotTextColor
-        {
-            get { return this.autopilotTextColor; }
-            set
-            {
-                this.autopilotTextColor = value;
-                //this.AutopilotTextColor = "yellow";
-                //MessageBox.Show("color has changed");
-                //this.AutopilotTextColor = "pink";
-                NotifyPropertyChanged(autopilotTextColor);
-            }
-        }
 
         private double throttle;
         public double Throttle
@@ -107,6 +97,7 @@ namespace FlightSimulator.ViewModels
         private void OnAutopilotOK()
         {
             myModel.WriteFromAutoPilot(autopilotCommandText);
+            IsPink = false;
         }
         #endregion
 
@@ -123,6 +114,7 @@ namespace FlightSimulator.ViewModels
         private void OnAutopilotClear()
         {
             AutopilotCommandText = "";
+            IsPink = false;
         }
         #endregion
 

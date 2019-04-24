@@ -55,24 +55,11 @@ namespace FlightSimulator.Views
             plotter.AddLineGraph(planeLocations, 2, "Route");
         }
 
-        public void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e) //WAS PRIVATE! CHANGE BACK WHEN THINGS SETTLE.
+        private void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //MessageBox.Show("Has entered VM_PropertyChanged!");
 
             if (e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon"))
             {
-                //for (int i = 2; i >= 0; --i)
-                //{
-                //    Point p1 = new Point(1, 1);
-                //    planeLocations.AppendAsync(Dispatcher, p1);
-                //    p1 = new Point(1, -1);
-                //    planeLocations.AppendAsync(Dispatcher, p1);
-                //    p1 = new Point(8, 2);
-                //    planeLocations.AppendAsync(Dispatcher, p1);
-                //}
-
-                //double lat = ((FlightBoardModel)sender).Lat;    //Scat later change
-                //double lon = ((FlightBoardModel)sender).Lon;
 
                 var _fbView = sender as FlightBoardModel;
                 Console.WriteLine("Took Notice!: " + _fbView.Lon + ", " + _fbView.Lat);

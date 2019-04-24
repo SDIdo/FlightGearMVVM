@@ -113,21 +113,21 @@
                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ScrollViewer.CanContentScroll="True"
-                             AcceptsReturn="True" Text="{Binding AutopilotCommandText}" Background="{Binding AutopilotTextColor}">
-                    <!--<TextBox.Style>
+                             AcceptsReturn="True" Text="{Binding Path=AutopilotCommandText, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Style>
                         <Style TargetType="TextBox">
-                            <Setter Property="Background" Value="pink"/>
+                            <!--<Setter Property="Background" Value="pink"/>
                             <Style.Triggers>
                                 <Trigger Property= "Text" Value="">
                                     <Setter Property="Background" Value="pink"/>
-                                </Trigger>
-
-                                <DataTrigger Binding ="{ Binding ElementName = AutopilotOKButton, Path = IsPressed}" Value="true">
+                                </Trigger>-->
+                            <Style.Triggers>
+                                <DataTrigger Binding ="{Binding IsPink}" Value="true">
                                     <Setter Property="Background" Value="pink"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TextBox.Style>-->
+                    </TextBox.Style>
                 </TextBox>
                 <Grid>
                     <Grid.ColumnDefinitions>
