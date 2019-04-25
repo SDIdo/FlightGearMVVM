@@ -34,10 +34,36 @@ namespace FlightSimulator.ViewModels
             {
                 autopilotCommandText = value;
                 NotifyPropertyChanged(autopilotCommandText); //Signalling to the text box
-                IsPink = true;
+                if(autopilotCommandText != "")
+                {
+                    IsPink = true;
+                } else
+                {
+                    IsPink = false;
+                }
+            }
+        }
+        private double aileron;
+        public double Aileron
+        {
+            get { return aileron; }
+            set
+            {
+                aileron = value;
+                NotifyPropertyChanged("Aileron");
             }
         }
 
+        private double elevator;
+        public double Elevator
+        {
+            get { return elevator; }
+            set
+            {
+                elevator = value;
+                NotifyPropertyChanged("Elevator");
+            }
+        }
 
         private double throttle;
         public double Throttle

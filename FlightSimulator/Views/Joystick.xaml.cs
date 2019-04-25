@@ -26,11 +26,22 @@ namespace FlightSimulator.Views
         CommandCenterUCVM myViewModel;
         public void SetVM(CommandCenterUCVM viewModel)
         {
+            this.DataContext = viewModel;
             myViewModel = viewModel;
             Moved += delegate (Joystick o, VirtualJoystickEventArgs e)  //TODO make it a command
             {
+                myViewModel.Elevator = e.Elevator;
+                myViewModel.Aileron = e.Aileron;
                 myViewModel.Write(e.Aileron, e.Elevator);
             };
+
+            Released += delegate (Joystick o)  //TODO make it a command
+            {
+                myViewModel.Elevator = 0;
+                myViewModel.Aileron = 0;
+                myViewModel.Write(0, 0);
+            };
+
         }
         /// <summary>Current Aileron</summary>
         public static readonly DependencyProperty AileronProperty =

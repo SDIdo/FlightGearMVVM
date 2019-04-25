@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows;
 using System.ComponentModel;
+using System.IO;
 
 namespace FlightSimulator
 {
@@ -26,18 +27,16 @@ namespace FlightSimulator
         public string InfoString
         {
             get { return infoString; }
-            set {
+            set
+            {
+                Console.WriteLine("@@@@@@@@ This is being sent: " + value);
                 infoString = value;
                 NotifyPropertyChanged(infoString);
-                }
+            }
         }
 
-        //private TcpClient myTcpClient;
+        private TcpClient myTcpClient;
         private TcpListener myTcpListener;
-
-        //private string myIP;
-        //private int myInfoPort;
-        //private int myCommandPort;
         public volatile bool stop = true;
 
         public void Connect(string ip, int infoPort, int commandPort)
@@ -48,10 +47,22 @@ namespace FlightSimulator
             }
             var ipNum = Dns.GetHostEntry(ip).AddressList[1];
             myTcpListener = new TcpListener(ipNum, infoPort); // set server.
-            //myTcpClient = default(TcpClient);
+            this.Start();
+
+            string sendIp = Properties.Settings.Default.FlightServerIP;
+            if (sendIp == "127.0.0.1")  // @TODO: later get host by address.
+            {
+                sendIp = "localhost";
+            }
+            //myTcpClient = null;
+            //while (myTcpClient == null)
+            //{
+            //    myTcpClient = new TcpClient(sendIp, Properties.Settings.Default.FlightCommandPort); // connect as client.
+            //    Thread.Sleep(500);
+            //}
+            //MessageBox.Show("connected");
 
             stop = false;
-            this.Start();
         }
 
         /**
@@ -60,7 +71,7 @@ namespace FlightSimulator
         public void Disconnect()
         {
             stop = true;
-            MessageBox.Show("NEtwork Disconnect");
+            this.myTcpClient.Close();
         }
 
         /**
@@ -72,7 +83,6 @@ namespace FlightSimulator
             try
             {
                 myTcpListener.Start();
-                MessageBox.Show("server waiting for client..");
             }
             catch (Exception ex)
             {
@@ -89,85 +99,78 @@ namespace FlightSimulator
             string information = "";
             bool isDataEnd = false;
 
-            while (!stop)
+            using (var reader = new StreamReader(readTcpClient.GetStream(), Encoding.UTF8, true))
             {
-                byte[] receivedBuffer = new byte[256];
-                mutex.WaitOne();
-                NetworkStream streams = readTcpClient.GetStream();
-
-                n = streams.Read(receivedBuffer, 0, receivedBuffer.Length);
-                mutex.ReleaseMutex();
-
-                Console.WriteLine("NOW! in read (receive)");
-                if (n < 0)
+                while (!stop)
                 {
-                    Console.WriteLine("Problem with reading");
-                }
-                information = new string(Encoding.UTF8.GetChars(receivedBuffer));
-                Console.WriteLine("THis is it!!!: " + information);
+                    //byte[] receivedBuffer = new byte[512];
+                    //n = streams.Read(receivedBuffer, 0, receivedBuffer.Length);
+                    mutex.WaitOne();
 
-                if (backRemainder != "")
-                {
-                    remainder = backRemainder;
-                    backRemainder = "";
-                }
+                    //NetworkStream streams = readTcpClient.GetStream();
 
-                index = information.IndexOf('\n');
-                Console.WriteLine("index is: " + index);
-                // if the line terminator was not found, append all of the information.
-                if (index < 0)
-                {
-                    remainder += information;
-                }
-                else
-                {
-                    // appends the remainder of the information until the next line.
-                    Console.WriteLine(information.Length);
-                    remainder += information.Substring(0, index);
-                    backRemainder = information.Substring(index + 1, information.Length - index - 1);
-                    isDataEnd = true;
-                }
+                    information = reader.ReadLine();
+                    Console.WriteLine("************ " + information);
+                    this.InfoString = information;
+                    mutex.ReleaseMutex();
 
-                if (isDataEnd)
-                {
-                    Console.WriteLine("isDataEnd = True (then false)");
-                    Console.WriteLine(remainder.ToString());
 
-                    this.InfoString = remainder;
 
-                    remainder = "";
-                    isDataEnd = false;
+                    //information = new string(encoding.utf8.getchars(receivedbuffer));
+
+                    //if (backremainder != "")
+                    //{
+                    //    remainder = backremainder;
+                    //    backremainder = "";
+                    //}
+
+                    //index = information.indexof('\n');
+                    //console.writeline("index is: " + index);
+                    //// if the line terminator was not found, append all of the information.
+                    //if (index < 0)
+                    //{
+                    //    remainder += information;
+                    //}
+                    //else
+                    //{
+                    //    // appends the remainder of the information until the next line.
+                    //    console.writeline(information.length);
+                    //    remainder += information.substring(0, index);
+                    //    backremainder = information.substring(index + 1, information.length - index - 1);
+                    //    isdataend = true;
+                    //}
+
+                    //if (isdataend)
+                    //{
+                    //    console.writeline("isdataend = true (then false)");
+                    //    console.writeline(remainder.tostring());
+
+                    //    this.infostring = remainder;
+
+                    //    remainder = "";
+                    //    isdataend = false;
+                    //}
                 }
             }
             this.myTcpListener.Stop();
         }
-
         /**
          * This function connects to a server and writes a command to it.
          */
         public void Write(string command)
         {
-            //mutex.WaitOne();
-            string ip = Properties.Settings.Default.FlightServerIP;
-            int sendPort = Properties.Settings.Default.FlightCommandPort;
+            mutex.WaitOne();
             //MessageBox.Show("connect with ip:" + ip);
             //string ipName = Dns.GetHostByAddress(ip).HostName;
-            if (ip == "127.0.0.1")  // @TODO: later get host by address.
-            {
-                ip = "localhost";
-            }
-
-            TcpClient writeTcpClient = new TcpClient(ip, sendPort); // connect as client.
+            NetworkStream writeStream = this.myTcpClient.GetStream();  //creates a network stream
             int byteCount = Encoding.ASCII.GetByteCount(command); //how many bytes
             byte[] sendData = new byte[byteCount];  //create a buffer
 
             sendData = Encoding.ASCII.GetBytes(command);   //puts the message in the buffer
-            //MessageBox.Show("Current Command is: " + sendData.ToString());
-            NetworkStream stream = writeTcpClient.GetStream();  //creates a network stream
 
-            stream.Write(sendData, 0, sendData.Length); //network stream to transfer what's in buffer
-            writeTcpClient.Close();
-            stream.Close();
+            writeStream.Write(sendData, 0, sendData.Length); //network stream to transfer what's in buffer
+            writeStream.Flush();
+            mutex.ReleaseMutex();
         }
 
         /**
@@ -176,11 +179,11 @@ namespace FlightSimulator
         public void Start()
         {
             // Opens a thread which reads information from server.
-            new Thread( ()=>
-            {
-                //MessageBox.Show("starting thread!");
-                this.Read();
-            }).Start();
+            new Thread(() =>
+           {
+                   //MessageBox.Show("starting thread!");
+                   this.Read();
+           }).Start();
         }
     }
 }

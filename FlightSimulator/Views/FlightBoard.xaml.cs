@@ -63,7 +63,7 @@ namespace FlightSimulator.Views
 
                 var _fbView = sender as FlightBoardModel;
                 Console.WriteLine("Took Notice!: " + _fbView.Lon + ", " + _fbView.Lat);
-                Point p1 = new Point(_fbView.Lon, _fbView.Lat);
+                Point p1 = new Point(_fbView.Lat, _fbView.Lon);
                 planeLocations.AppendAsync(Dispatcher, p1);
             }
         }

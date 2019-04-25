@@ -34,8 +34,6 @@ namespace FlightSimulator.Model
                 myNetwork.Write("set controls/flight/elevator " + elevator.ToString() + "\r\n");
             }
 
-
-            //myNetwork.Write("set controls/flight/elevator " + elevator.ToString() + "\r\n");
             // for sliders:
         }
         public void WriteFromSliders(double rudder, double throttle)
@@ -65,9 +63,9 @@ namespace FlightSimulator.Model
                 {
                     parsedCommand = commands[i] + "\n";
                 }
-                Thread.Sleep(2000);
                 new Thread(() =>
                 {
+                    Thread.Sleep(2000);
                     myNetwork.Write(parsedCommand);
                 }).Start();
             } 

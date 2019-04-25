@@ -21,32 +21,37 @@ namespace FlightSimulator.Model
 
         NetworkConnection myNetwork;
 
-        //public FlightBoardModel(ImyNetwork inputmyNetwork)
-        //{
-        //    this.myNetwork = inputmyNetwork;
-        //    this.myNetwork.PropertyChanged += this.ConvertInfoLine;
-        //}
-
         public FlightBoardModel(NetworkConnection network)
         {
             this.myNetwork = network;
             this.myNetwork.PropertyChanged += this.ConvertInfoLine;
-            //myNetwork.Connect("localhost", 5400, 5402);
         }
 
         public void ConvertInfoLine(object sender, PropertyChangedEventArgs e)
         {
+            string msg = e.PropertyName;
             string[] infoArray = e.PropertyName.Split(',');
-            string lon = infoArray[1];
-            string lat = infoArray[2];
+
+            string lon = infoArray[0];
+            string lat = infoArray[1];
             //MessageBox.Show("lon: " + lon + "lat: " + lat); //instead of this.. draw on the flightboard.
-            double numLon = 0;
-            double numLat = 0;
-            Double.TryParse(lon, out numLon);
-            Double.TryParse(lat, out numLat);
+            double numLon = Double.Parse(lon);
+            double numLat = Double.Parse(lat);
             
+            Console.WriteLine("Before sending");
+            Console.WriteLine("lon is: " + numLon);
+            Console.WriteLine("lat is: " + numLat);
             Lon = numLon;
             Lat = numLat;   //Sending to be drawn..
+            //string msg = e.PropertyName;
+            //Console.WriteLine("$$$$$$$$$$$$$$$$$" + msg);
+            //int index = msg.IndexOf(',');
+            //string sub = msg.Substring(0, index);
+            //Lon = Double.Parse(sub);
+            //sub = msg.Substring(index + 1);
+            //index = sub.IndexOf(',');
+            //sub = sub.Substring(0, index);
+            //Lat = Double.Parse(sub);
         }
 
         //The properties implementation
