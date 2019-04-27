@@ -61,9 +61,9 @@ namespace FlightSimulator.Views
             if (e.PropertyName.Equals("Lat") || e.PropertyName.Equals("Lon"))
             {
 
-                var _fbView = sender as FlightBoardModel;
-                Console.WriteLine("Took Notice!: " + _fbView.Lon + ", " + _fbView.Lat);
-                Point p1 = new Point(_fbView.Lat, _fbView.Lon);
+                var flightBoardView = sender as FlightBoardModel;
+                Console.WriteLine("Took Notice!: " + flightBoardView.Lon + ", " + flightBoardView.Lat);
+                Point p1 = new Point(flightBoardView.Lat, flightBoardView.Lon);
                 planeLocations.AppendAsync(Dispatcher, p1);
             }
         }

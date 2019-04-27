@@ -57,18 +57,22 @@ namespace FlightSimulator
             }
             int sendToPort = Properties.Settings.Default.FlightCommandPort;
             myTcpClient = new TcpClient();
-            while (!myTcpClient.Connected)
+
+            new Thread(() =>
             {
-                try
+                while (!myTcpClient.Connected)
                 {
-                    myTcpClient.Connect(sendToIp, sendToPort);
-                    Thread.Sleep(500);
+                    try
+                    {
+                        myTcpClient.Connect(sendToIp, sendToPort);
+                        Thread.Sleep(500);
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Was an attempt to connect\n");
+                    }
                 }
-                catch(Exception)
-                {
-                    Console.WriteLine("Was an attempt to connect\n");
-                }
-            }
+            }).Start();
             MessageBox.Show("connected");
         }
 
@@ -77,6 +81,10 @@ namespace FlightSimulator
          */
         public void Disconnect()
         {
+            if (stop)
+            {
+                return;
+            }
             stop = true;
             this.myTcpClient.Close();
         }
@@ -110,53 +118,12 @@ namespace FlightSimulator
             {
                 while (!stop)
                 {
-                    //byte[] receivedBuffer = new byte[512];
-                    //n = streams.Read(receivedBuffer, 0, receivedBuffer.Length);
                     mutex.WaitOne();
-
-                    //NetworkStream streams = readTcpClient.GetStream();
 
                     information = reader.ReadLine();
                     Console.WriteLine("************ " + information);
                     this.InfoString = information;
                     mutex.ReleaseMutex();
-
-
-
-                    //information = new string(encoding.utf8.getchars(receivedbuffer));
-
-                    //if (backremainder != "")
-                    //{
-                    //    remainder = backremainder;
-                    //    backremainder = "";
-                    //}
-
-                    //index = information.indexof('\n');
-                    //console.writeline("index is: " + index);
-                    //// if the line terminator was not found, append all of the information.
-                    //if (index < 0)
-                    //{
-                    //    remainder += information;
-                    //}
-                    //else
-                    //{
-                    //    // appends the remainder of the information until the next line.
-                    //    console.writeline(information.length);
-                    //    remainder += information.substring(0, index);
-                    //    backremainder = information.substring(index + 1, information.length - index - 1);
-                    //    isdataend = true;
-                    //}
-
-                    //if (isdataend)
-                    //{
-                    //    console.writeline("isdataend = true (then false)");
-                    //    console.writeline(remainder.tostring());
-
-                    //    this.infostring = remainder;
-
-                    //    remainder = "";
-                    //    isdataend = false;
-                    //}
                 }
             }
             Console.WriteLine("EXIT?");
