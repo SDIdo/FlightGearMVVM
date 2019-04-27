@@ -43,26 +43,33 @@ namespace FlightSimulator
         {
             if (!stop)
             {
-                this.Disconnect();
+                return;
             }
+            stop = false;
             var ipNum = Dns.GetHostEntry(ip).AddressList[1];
             myTcpListener = new TcpListener(ipNum, infoPort); // set server.
-            this.Start();
+            this.Start(); //
 
-            string sendIp = Properties.Settings.Default.FlightServerIP;
-            if (sendIp == "127.0.0.1")  // @TODO: later get host by address.
+            string sendToIp = Properties.Settings.Default.FlightServerIP;
+            if (sendToIp == "127.0.0.1")  // @TODO: later get host by address.
             {
-                sendIp = "localhost";
+                sendToIp = "localhost";
             }
-            //myTcpClient = null;
-            //while (myTcpClient == null)
-            //{
-            //    myTcpClient = new TcpClient(sendIp, Properties.Settings.Default.FlightCommandPort); // connect as client.
-            //    Thread.Sleep(500);
-            //}
-            //MessageBox.Show("connected");
-
-            stop = false;
+            int sendToPort = Properties.Settings.Default.FlightCommandPort;
+            myTcpClient = new TcpClient();
+            while (!myTcpClient.Connected)
+            {
+                try
+                {
+                    myTcpClient.Connect(sendToIp, sendToPort);
+                    Thread.Sleep(500);
+                }
+                catch(Exception)
+                {
+                    Console.WriteLine("Was an attempt to connect\n");
+                }
+            }
+            MessageBox.Show("connected");
         }
 
         /**
@@ -92,12 +99,12 @@ namespace FlightSimulator
 
             TcpClient readTcpClient = myTcpListener.AcceptTcpClient();  //goes to sleep until interupt
             MessageBox.Show("client accepted :)");
-            int index = 0;
-            int n = 0;
-            string remainder = "";
-            string backRemainder = "";
+            //int index = 0;
+            //int n = 0;
+            //string remainder = "";
+            //string backRemainder = "";
             string information = "";
-            bool isDataEnd = false;
+            //bool isDataEnd = false;
 
             using (var reader = new StreamReader(readTcpClient.GetStream(), Encoding.UTF8, true))
             {
@@ -152,6 +159,7 @@ namespace FlightSimulator
                     //}
                 }
             }
+            Console.WriteLine("EXIT?");
             this.myTcpListener.Stop();
         }
         /**
