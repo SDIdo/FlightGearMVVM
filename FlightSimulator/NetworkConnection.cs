@@ -13,23 +13,32 @@ using System.IO;
 
 namespace FlightSimulator
 {
+    /// <summary>
+    /// Class responsible for communication client and server wise
+    /// </summary>
     public class NetworkConnection : ITelnetClient
     {
+        static readonly string localHost = "localhost";
+        static readonly string personalIp = "127.0.0.1";
+        static readonly int tryPulse = 500;
         public static Mutex mutex = new Mutex();
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        /// <summary>
+        /// Function uses an event to update about a property change
+        /// </summary>
+        /// <param name="str">name of the property</param>
         public void NotifyPropertyChanged(string str)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(str));
         }
         private string infoString;
+
         public string InfoString
         {
             get { return infoString; }
             set
             {
-                Console.WriteLine("@@@@@@@@ This is being sent: " + value);
                 infoString = value;
                 NotifyPropertyChanged(infoString);
             }
@@ -38,8 +47,13 @@ namespace FlightSimulator
         private TcpClient myTcpClient;
         private TcpListener myTcpListener;
         public volatile bool stop = true;
-
-        public void Connect(string ip, int infoPort, int commandPort)
+        /// <summary>
+        /// Connect opens program as server and looks for a server to reach
+        /// </summary>
+        /// <param name="ip">adress of ip</param>
+        /// <param name="receivePort"></param>
+        /// <param name="sendPort"></param>
+        public void Connect(string ip, int receivePort, int sendPort)
         {
             if (!stop)
             {
@@ -47,38 +61,40 @@ namespace FlightSimulator
             }
             stop = false;
             var ipNum = Dns.GetHostEntry(ip).AddressList[1];
-            myTcpListener = new TcpListener(ipNum, infoPort); // set server.
-            this.Start(); //
+            myTcpListener = new TcpListener(ipNum, receivePort); // set server.
+            this.Start();
 
             string sendToIp = Properties.Settings.Default.FlightServerIP;
-            if (sendToIp == "127.0.0.1")  // @TODO: later get host by address.
+            if (sendToIp == personalIp)
             {
-                sendToIp = "localhost";
+                sendToIp = localHost;
             }
             int sendToPort = Properties.Settings.Default.FlightCommandPort;
             myTcpClient = new TcpClient();
-
-            new Thread(() =>
             {
-                while (!myTcpClient.Connected)
+                Thread connectThread = new Thread(() => //thread will try and reach a server
                 {
-                    try
+                    while (!myTcpClient.Connected)
                     {
-                        myTcpClient.Connect(sendToIp, sendToPort);
-                        Thread.Sleep(500);
+                        try
+                        {
+                            myTcpClient.Connect(sendToIp, sendToPort);
+                            Thread.Sleep(tryPulse);
+                        }
+                        catch (Exception)
+                        {
+                            /** Keep trying */
+                        }
                     }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("Was an attempt to connect\n");
-                    }
-                }
-            }).Start();
-            MessageBox.Show("connected");
+                    /** Upon reaching here program has been conected */
+                });
+                connectThread.IsBackground = true;
+                connectThread.Start();
+            }
         }
-
-        /**
-         * This function disconnects the open server for reading from client.
-         */
+        /// <summary>
+        /// This function closes program as a server and a client.
+        /// </summary>
         public void Disconnect()
         {
             if (stop)
@@ -88,31 +104,23 @@ namespace FlightSimulator
             stop = true;
             this.myTcpClient.Close();
         }
-
-        /**
-         * This function reads info from connected clients as long as not disconnected.
-         */
+        /// <summary>
+        /// This function reads info from connected clients as long as not disconnected.
+        /// </summary>
         public void Read()
         {
-
             try
             {
                 myTcpListener.Start();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.ToString());
-                Console.Read();
+                /** Could not open program as server */
             }
 
             TcpClient readTcpClient = myTcpListener.AcceptTcpClient();  //goes to sleep until interupt
-            MessageBox.Show("client accepted :)");
-            //int index = 0;
-            //int n = 0;
-            //string remainder = "";
-            //string backRemainder = "";
+
             string information = "";
-            //bool isDataEnd = false;
 
             using (var reader = new StreamReader(readTcpClient.GetStream(), Encoding.UTF8, true))
             {
@@ -121,22 +129,19 @@ namespace FlightSimulator
                     mutex.WaitOne();
 
                     information = reader.ReadLine();
-                    Console.WriteLine("************ " + information);
                     this.InfoString = information;
                     mutex.ReleaseMutex();
                 }
             }
-            Console.WriteLine("EXIT?");
             this.myTcpListener.Stop();
         }
-        /**
-         * This function connects to a server and writes a command to it.
-         */
+        /// <summary>
+        /// This function Writes a command to server
+        /// </summary>
+        /// <param name="command">command to server</param>
         public void Write(string command)
         {
-            mutex.WaitOne();
-            //MessageBox.Show("connect with ip:" + ip);
-            //string ipName = Dns.GetHostByAddress(ip).HostName;
+            mutex.WaitOne();    //one command at a time
             NetworkStream writeStream = this.myTcpClient.GetStream();  //creates a network stream
             int byteCount = Encoding.ASCII.GetByteCount(command); //how many bytes
             byte[] sendData = new byte[byteCount];  //create a buffer
@@ -144,19 +149,17 @@ namespace FlightSimulator
             sendData = Encoding.ASCII.GetBytes(command);   //puts the message in the buffer
 
             writeStream.Write(sendData, 0, sendData.Length); //network stream to transfer what's in buffer
-            writeStream.Flush();
+            writeStream.Flush();    //cleans the buffer
             mutex.ReleaseMutex();
         }
-
-        /**
-         * This function opens a server for reading from client on a new thread. 
-         */
+        /// <summary>
+        /// This function opens a server for reading from client on a new thread. 
+        /// </summary>
         public void Start()
         {
             // Opens a thread which reads information from server.
             new Thread(() =>
            {
-                   //MessageBox.Show("starting thread!");
                    this.Read();
            }).Start();
         }

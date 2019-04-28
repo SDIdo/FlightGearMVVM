@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+/// <summary>
+/// View model for FlightBoard implements the INotifyPropertyChanged
+/// </summary>
 namespace FlightSimulator.ViewModels
 {
 
@@ -16,13 +19,19 @@ namespace FlightSimulator.ViewModels
     {
         private FlightBoardModel myModel;
         public event PropertyChangedEventHandler PropertyChanged;
-
+        /// <summary>
+        /// update all who are registered to be notified about a changed property
+        /// </summary>
+        /// <param name="propName">the changed property name</param>
         public void NotifyPropertyChanged(string propName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
-
-        public FlightBoardViewModel(FlightBoardModel model)    //doesnt even enter to these registered funcs
+        /// <summary>
+        /// ctor for the view model
+        /// </summary>
+        /// <param name="model">a required model</param>
+        public FlightBoardViewModel(FlightBoardModel model)
         {
             myModel = model;
             myModel.PropertyChanged += delegate (object o, PropertyChangedEventArgs e)
@@ -31,14 +40,12 @@ namespace FlightSimulator.ViewModels
             };
         }
 
-
         public double Lon
         {
             get {
                 return myModel.Lon;
             }
         }
-
         public double Lat
         {
             get

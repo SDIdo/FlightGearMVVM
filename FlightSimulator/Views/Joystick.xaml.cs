@@ -23,25 +23,25 @@ namespace FlightSimulator.Views
     /// </summary>
     public partial class Joystick : UserControl
     {
+        static readonly int initVal = 0;
         CommandCenterUCVM myViewModel;
         public void SetVM(CommandCenterUCVM viewModel)
         {
             this.DataContext = viewModel;
             myViewModel = viewModel;
-            Moved += delegate (Joystick o, VirtualJoystickEventArgs e)  //TODO make it a command
+            Moved += delegate (Joystick o, VirtualJoystickEventArgs e)
             {
                 myViewModel.Elevator = e.Elevator;
                 myViewModel.Aileron = e.Aileron;
-                myViewModel.Write(e.Aileron, e.Elevator);
+                myViewModel.SendFromJoystick(e.Aileron, e.Elevator);
             };
 
-            Released += delegate (Joystick o)  //TODO make it a command
+            Released += delegate (Joystick o)
             {
-                myViewModel.Elevator = 0;
-                myViewModel.Aileron = 0;
-                myViewModel.Write(0, 0);
+                myViewModel.Elevator = initVal;
+                myViewModel.Aileron = initVal;
+                myViewModel.SendFromJoystick(initVal, initVal);
             };
-
         }
         /// <summary>Current Aileron</summary>
         public static readonly DependencyProperty AileronProperty =

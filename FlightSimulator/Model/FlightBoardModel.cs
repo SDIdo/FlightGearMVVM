@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
+/// <summary>
+/// model for the grid representing lat-lon flight
+/// </summary>
 namespace FlightSimulator.Model
 {
     public class FlightBoardModel : INotifyPropertyChanged
@@ -20,38 +23,32 @@ namespace FlightSimulator.Model
         public event PropertyChangedEventHandler PropertyChanged;
 
         NetworkConnection myNetwork;
-
+        /// <summary>
+        /// ctor for this model
+        /// </summary>
+        /// <param name="network">a required NetworkConnection class</param>
         public FlightBoardModel(NetworkConnection network)
         {
             this.myNetwork = network;
-            this.myNetwork.PropertyChanged += this.ConvertInfoLine;
+            this.myNetwork.PropertyChanged += this.LonLatFromData;
         }
-
-        public void ConvertInfoLine(object sender, PropertyChangedEventArgs e)
+        /// <summary>
+        /// gets lon and lat from the input from the server
+        /// </summary>
+        /// <param name="sender">the server</param>
+        /// <param name="e">the input</param>
+        public void LonLatFromData(object sender, PropertyChangedEventArgs e)
         {
             string msg = e.PropertyName;
             string[] infoArray = e.PropertyName.Split(',');
 
-            string lon = infoArray[0];
-            string lat = infoArray[1];
-            //MessageBox.Show("lon: " + lon + "lat: " + lat); //instead of this.. draw on the flightboard.
+            string lon = infoArray[0];  //location of lon is 0
+            string lat = infoArray[1];  //location of lat is 1
             double numLon = Double.Parse(lon);
             double numLat = Double.Parse(lat);
-            
-            Console.WriteLine("Before sending");
-            Console.WriteLine("lon is: " + numLon);
-            Console.WriteLine("lat is: " + numLat);
+
             Lon = numLon;
-            Lat = numLat;   //Sending to be drawn..
-            //string msg = e.PropertyName;
-            //Console.WriteLine("$$$$$$$$$$$$$$$$$" + msg);
-            //int index = msg.IndexOf(',');
-            //string sub = msg.Substring(0, index);
-            //Lon = Double.Parse(sub);
-            //sub = msg.Substring(index + 1);
-            //index = sub.IndexOf(',');
-            //sub = sub.Substring(0, index);
-            //Lat = Double.Parse(sub);
+            Lat = numLat;
         }
 
         //The properties implementation
@@ -64,7 +61,6 @@ namespace FlightSimulator.Model
             set
             {
                 lat = value;
-                //MessageBox.Show("Entered set lat from the Model");
                 NotifyPropertyChanged("Lat");
             }
         }
@@ -74,14 +70,12 @@ namespace FlightSimulator.Model
             set
             {
                 lon = value;
-                //MessageBox.Show("Entered set lon from the Model");
                 NotifyPropertyChanged("Lon");
             }
         }
 
         public void NotifyPropertyChanged(string propName)
         {
-            //MessageBox.Show("In FlightBoard propertyChanged func");
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 

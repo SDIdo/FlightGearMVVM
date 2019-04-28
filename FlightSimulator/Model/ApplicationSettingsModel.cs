@@ -5,12 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Contains and responsible for the application settings
+/// </summary>
 namespace FlightSimulator.Model
 {
     public class ApplicationSettingsModel : ISettingsModel
     {
         #region Singleton
         private static ISettingsModel m_Instance = null;
+        /// <summary>
+        /// ctor for this settings container
+        /// </summary>
         public static ISettingsModel Instance
         {
             get
@@ -39,12 +45,16 @@ namespace FlightSimulator.Model
             get { return Properties.Settings.Default.FlightInfoPort; }
             set { Properties.Settings.Default.FlightInfoPort = value; }
         }
-
+        /// <summary>
+        /// saves the current values
+        /// </summary>
         public void SaveSettings()
         {
             Properties.Settings.Default.Save();
         }
-
+        /// <summary>
+        /// reloads the values
+        /// </summary>
         public void ReloadSettings()
         {
             Properties.Settings.Default.Reload();

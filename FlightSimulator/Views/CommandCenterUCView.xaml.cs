@@ -26,6 +26,10 @@ namespace FlightSimulator.Views
         {
             InitializeComponent();
         }
+        /// <summary>
+        /// Sets a view model for this view
+        /// </summary>
+        /// <param name="viewModel">the required view model</param>
         public void SetVM(CommandCenterUCVM viewModel)
         {
             this.DataContext = viewModel;

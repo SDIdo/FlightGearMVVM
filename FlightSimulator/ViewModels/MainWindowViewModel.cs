@@ -9,12 +9,18 @@ using System.Windows.Input;
 using System.Windows;
 using System.ComponentModel;
 
+/// <summary>
+/// reponsible for between main view and main model
+/// </summary>
 namespace FlightSimulator.ViewModels
-{
+{   
     class MainWindowViewModel : BaseNotify
     {
         private MainWindowModel myModel;
-
+        /// <summary>
+        /// Set a main model at ctor
+        /// </summary>
+        /// <param name="model">a required model for main</param>
         public MainWindowViewModel(MainWindowModel model)
         {
             this.myModel = model;
@@ -30,6 +36,9 @@ namespace FlightSimulator.ViewModels
                 return _settingsCommand ?? (_settingsCommand = new CommandHandler(() => OnClickSettings()));
             }
         }
+        /// <summary>
+        /// Opens up the setting window, on command
+        /// </summary>
         private void OnClickSettings()
         {
             Views.Windows.Settings settings = new Views.Windows.Settings();
@@ -47,6 +56,9 @@ namespace FlightSimulator.ViewModels
                 return _connectCommand ?? (_connectCommand = new CommandHandler(() => OnConnectClick()));
             }
         }
+        /// <summary>
+        /// start up the connect function in the model
+        /// </summary>
         private void OnConnectClick()
         {
             myModel.Connect();
@@ -63,6 +75,9 @@ namespace FlightSimulator.ViewModels
                 return _disconnectCommand ?? (_disconnectCommand = new CommandHandler(() => OnDisconnectClick()));
             }
         }
+        /// <summary>
+        /// Start up the disconnect function in the model
+        /// </summary>
         private void OnDisconnectClick()
         {
             myModel.Disconnect();

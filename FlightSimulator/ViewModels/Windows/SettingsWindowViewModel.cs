@@ -8,15 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-
+/// <summary>
+/// view model for binding communication values with the settings view
+/// </summary>
 namespace FlightSimulator.ViewModels.Windows
 {
 
     public class SettingsWindowViewModel : BaseNotify
     {
-
         private ISettingsModel model;
-
+        /// <summary>
+        /// ctor for this view model
+        /// </summary>
+        /// <param name="model">a required settings model</param>
         public SettingsWindowViewModel(ISettingsModel model)
         {
             this.model = model;
@@ -51,12 +55,16 @@ namespace FlightSimulator.ViewModels.Windows
                 NotifyPropertyChanged("FlightInfoPort");
             }
         }
-
+        /// <summary>
+        /// Model will save current chosen communication values
+        /// </summary>
         public void SaveSettings()
         {
             model.SaveSettings();
         }
-
+        /// <summary>
+        /// Model will reload current chosen communication values
+        /// </summary>
         public void ReloadSettings()
         {
             model.ReloadSettings();
@@ -72,9 +80,11 @@ namespace FlightSimulator.ViewModels.Windows
                 return _clickCommand ?? (_clickCommand = new CommandHandler(() => OnClick()));
             }
         }
+        /// <summary>
+        ///  Upon clicking OK model will save current chosen communication values
+        /// </summary>
         private void OnClick()
         {
-            MessageBox.Show("OnClick OK");
             model.SaveSettings();
         }
         #endregion
@@ -88,9 +98,11 @@ namespace FlightSimulator.ViewModels.Windows
                 return _cancelCommand ?? (_cancelCommand = new CommandHandler(() => OnCancel()));
             }
         }
+        /// <summary>
+        /// Upon cancel click model shall not save chosen communication values
+        /// </summary>
         private void OnCancel()
         {
-            MessageBox.Show("OnClick Cancel");
             model.ReloadSettings();
         }
         #endregion

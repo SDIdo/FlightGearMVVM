@@ -109,7 +109,7 @@
 
         <TabItem Header="Auto Pilot">
             <StackPanel>
-                <TextBox x:Name="AutopilotTextBox" Height="370" FontSize="16"
+                <TextBox x:Name="AutopilotTextBox" Height="380" FontSize="16"
                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ScrollViewer.CanContentScroll="True"
@@ -117,7 +117,7 @@
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Style.Triggers>
-                                <DataTrigger Binding ="{Binding IsPink}" Value="true">
+                                <DataTrigger Binding ="{Binding IsNew}" Value="true">
                                     <Setter Property="Background" Value="pink"/>
                                 </DataTrigger>
                             </Style.Triggers>

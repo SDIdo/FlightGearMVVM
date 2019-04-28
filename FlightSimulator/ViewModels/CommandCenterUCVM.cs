@@ -9,21 +9,22 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
+/// <summary>
+/// View model of operations - automatic pilot and manual joystick
+/// </summary>
 namespace FlightSimulator.ViewModels
 {
     public class CommandCenterUCVM : BaseNotify
     {
-        private bool isPink;
+        private bool isNew;
 
-        public bool IsPink
+        public bool IsNew
         {
-            get { return  isPink; }
-            set {  isPink = value;
-                NotifyPropertyChanged("IsPink");
+            get { return  isNew; }
+            set {  isNew = value;
+                NotifyPropertyChanged("IsNew");
             }
         }
-
-
 
         private string autopilotCommandText;
 
@@ -36,10 +37,10 @@ namespace FlightSimulator.ViewModels
                 NotifyPropertyChanged(autopilotCommandText); //Signalling to the text box
                 if(autopilotCommandText != "")
                 {
-                    IsPink = true;
+                    IsNew = true;
                 } else
                 {
-                    IsPink = false;
+                    IsNew = false;
                 }
             }
         }
@@ -91,23 +92,33 @@ namespace FlightSimulator.ViewModels
         }
 
         CommandCenterUCModel myModel;
+        /// <summary>
+        /// ctor for this view model
+        /// </summary>
+        /// <param name="model">a required model</param>
         public CommandCenterUCVM(CommandCenterUCModel model)
         {
             myModel = model;
         }
-
-        public void Write(double aileron, double elevator)
+        /// <summary>
+        /// Send from the joystick to be processed to the server
+        /// </summary>
+        /// <param name="aileron">the aileron value</param>
+        /// <param name="elevator">the elevator value</param>
+        public void SendFromJoystick(double aileron, double elevator)
         {
             new Thread( ()=> {
             myModel.WriteFromJoystick(aileron, elevator);
         }).Start();
             
         }
-
-
-        public void WriteFromAutopilot(string a)
+        /// <summary>
+        /// Send from the autopilot to be processed to the server
+        /// </summary>
+        /// <param name="commands">one or more commands to send</param>
+        public void SendFromAutopilot(string commands)
         {
-                myModel.WriteFromAutoPilot(a);
+                myModel.WriteFromAutoPilot(commands);
         }
 
         #region Commands
@@ -120,13 +131,15 @@ namespace FlightSimulator.ViewModels
                 return _autopilotOKCommand ?? (_autopilotOKCommand = new CommandHandler(() => OnAutopilotOK()));
             }
         }
+        /// <summary>
+        /// Send command/s to the server
+        /// </summary>
         private void OnAutopilotOK()
         {
             myModel.WriteFromAutoPilot(autopilotCommandText);
-            IsPink = false;
+            IsNew = false;
         }
         #endregion
-
 
         #region AutopilotClearCommand
         private ICommand _autopilotClearCommand;
@@ -137,14 +150,15 @@ namespace FlightSimulator.ViewModels
                 return _autopilotClearCommand ?? (_autopilotClearCommand = new CommandHandler(() => OnAutopilotClear()));
             }
         }
+        /// <summary>
+        /// Upon pressing the clear button color white and clean text block
+        /// </summary>
         private void OnAutopilotClear()
         {
             AutopilotCommandText = "";
-            IsPink = false;
+            IsNew = false;
         }
         #endregion
-
         #endregion
-
     }
 }

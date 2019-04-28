@@ -20,7 +20,8 @@ using FlightSimulator.ViewModels;
 namespace FlightSimulator
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Initialize components and main classes. 
+    /// Has also a registration to the closing event for nice exiting upon x click.
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -28,20 +29,15 @@ namespace FlightSimulator
         {
             InitializeComponent();
             NetworkConnection generalTelnet = new NetworkConnection();
-            this.DataContext = new MainWindowViewModel(new MainWindowModel(generalTelnet));
-
+            MainWindowViewModel myViewModel = new MainWindowViewModel(new MainWindowModel(generalTelnet));
+            this.DataContext = myViewModel;
 
             FlightBoardViewModel flightBoardViewModel = new FlightBoardViewModel(new FlightBoardModel(generalTelnet));
             this.flightBoardView.SetVM(flightBoardViewModel);
             this.flightBoardView.DataContext = flightBoardViewModel;
 
-
-
             CommandCenterUCVM ccucvm = new CommandCenterUCVM(new CommandCenterUCModel(generalTelnet));
             this.commandCenterUCView.SetVM(ccucvm);
-
-
-
         }
     }
 }
