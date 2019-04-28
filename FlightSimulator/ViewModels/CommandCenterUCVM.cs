@@ -34,7 +34,7 @@ namespace FlightSimulator.ViewModels
             set
             {
                 autopilotCommandText = value;
-                NotifyPropertyChanged(autopilotCommandText); //Signalling to the text box
+                NotifyPropertyChanged(autopilotCommandText); //Signalling to the autopilot
                 if(autopilotCommandText != "")
                 {
                     IsNew = true;
@@ -51,7 +51,10 @@ namespace FlightSimulator.ViewModels
             set
             {
                 aileron = value;
-                NotifyPropertyChanged("Aileron");
+                new Thread(() =>
+                {
+                    this.myModel.WriteFromJoystick(aileron, elevator);
+                }).Start();
             }
         }
 
@@ -62,7 +65,10 @@ namespace FlightSimulator.ViewModels
             set
             {
                 elevator = value;
-                NotifyPropertyChanged("Elevator");
+                new Thread(() =>
+                {
+                    this.myModel.WriteFromJoystick(aileron, elevator);
+                }).Start();
             }
         }
 

@@ -31,7 +31,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold">&#8592;aileron&#8594;</TextBlock>
-                    <Label Grid.Column="1" Name="AileronValueText" ContentStringFormat="N2" HorizontalAlignment="Right" Content="{Binding Aileron}"></Label>
+                    <Label Grid.Column="1" Name="AileronValueText" ContentStringFormat="N2" HorizontalAlignment="Right" Content="{Binding ElementName=JoystickView, Path=Aileron}"></Label>
                 </Grid>
 
                 <!--Inner grid for the righthandside elevator text-->
@@ -47,14 +47,15 @@
                             <RotateTransform Angle="90"/>
                         </TextBlock.LayoutTransform>
                     </TextBlock>
-                    <Label Grid.Row="0" Name="ElevatorValueText" VerticalAlignment="Bottom" ContentStringFormat="N2" Content="{Binding Elevator}">
+                    <Label Grid.Row="0" x:Name="ElevatorValueText" VerticalAlignment="Bottom" ContentStringFormat="N2" Content="{Binding ElementName=JoystickView, Path=Elevator}">
                         <Label.LayoutTransform>
                             <RotateTransform Angle="90"/>
                         </Label.LayoutTransform>
                     </Label>
                 </Grid>
 
-                <local:Joystick x:Name="JoystickView" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                <local:Joystick x:Name="JoystickView" Elevator="{Binding Elevator, Mode=TwoWay}"
+                                Aileron="{Binding Aileron, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
 
                 <!--Inner grid for the leftside throttle slider-->
                 <Grid Grid.Row="1" Grid.Column="0" Margin="1,1,1,1">

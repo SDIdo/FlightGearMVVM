@@ -29,19 +29,6 @@ namespace FlightSimulator.Views
         {
             this.DataContext = viewModel;
             myViewModel = viewModel;
-            Moved += delegate (Joystick o, VirtualJoystickEventArgs e)
-            {
-                myViewModel.Elevator = e.Elevator;
-                myViewModel.Aileron = e.Aileron;
-                myViewModel.SendFromJoystick(e.Aileron, e.Elevator);
-            };
-
-            Released += delegate (Joystick o)
-            {
-                myViewModel.Elevator = initVal;
-                myViewModel.Aileron = initVal;
-                myViewModel.SendFromJoystick(initVal, initVal);
-            };
         }
         /// <summary>Current Aileron</summary>
         public static readonly DependencyProperty AileronProperty =

@@ -32,6 +32,9 @@ namespace FlightSimulator
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(str));
         }
+        Thread connectThread; //thread will try and reach a server
+        Thread listenThread; //thread will wait for a client to connect
+
         private string infoString;
 
         public string InfoString
@@ -70,27 +73,24 @@ namespace FlightSimulator
                 sendToIp = localHost;
             }
             int sendToPort = Properties.Settings.Default.FlightCommandPort;
-            myTcpClient = new TcpClient();
+            this.myTcpClient = new TcpClient();
+            this.connectThread = new Thread(() =>
             {
-                Thread connectThread = new Thread(() => //thread will try and reach a server
+                while (!myTcpClient.Connected)
                 {
-                    while (!myTcpClient.Connected)
+                    try
                     {
-                        try
-                        {
-                            myTcpClient.Connect(sendToIp, sendToPort);
-                            Thread.Sleep(tryPulse);
-                        }
-                        catch (Exception)
-                        {
-                            /** Keep trying */
-                        }
+                        myTcpClient.Connect(sendToIp, sendToPort);
+                        Thread.Sleep(tryPulse);
                     }
+                    catch (Exception)
+                    {
+                            /** Keep trying */
+                    }
+                }
                     /** Upon reaching here program has been conected */
-                });
-                connectThread.IsBackground = true;
-                connectThread.Start();
-            }
+            });
+            this.connectThread.Start();
         }
         /// <summary>
         /// This function closes program as a server and a client.
@@ -101,8 +101,11 @@ namespace FlightSimulator
             {
                 return;
             }
-            stop = true;
+            connectThread.Abort();
             this.myTcpClient.Close();
+            this.myTcpListener.Stop();
+            listenThread.Abort();
+            stop = true;
         }
         /// <summary>
         /// This function reads info from connected clients as long as not disconnected.
@@ -119,7 +122,6 @@ namespace FlightSimulator
             }
 
             TcpClient readTcpClient = myTcpListener.AcceptTcpClient();  //goes to sleep until interupt
-
             string information = "";
 
             using (var reader = new StreamReader(readTcpClient.GetStream(), Encoding.UTF8, true))
@@ -158,10 +160,11 @@ namespace FlightSimulator
         public void Start()
         {
             // Opens a thread which reads information from server.
-            new Thread(() =>
+            this.listenThread = new Thread(() =>
            {
-                   this.Read();
-           }).Start();
+               this.Read();
+           });
+            this.listenThread.Start();
         }
     }
 }
